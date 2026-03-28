@@ -6,7 +6,7 @@ Personal finance tracker built with Kotlin Multiplatform and Compose Multiplatfo
 
 - **Transactions** — add, edit, delete income and expenses with categories, dates, and comments
 - **Categories** — preset and custom categories with icons and colors
-- **Bank Import** — CSV and PDF statement import with auto-detection (Tinkoff, Sber, Revolut) and smart categorization
+- **Bank Import** — CSV and PDF statement import with auto-detection and smart categorization
 - **Statistics** — monthly charts, top spending categories, month-over-month comparison, balance overview
 - **Settings** — currency selection, dark/light theme, CSV export
 
@@ -16,20 +16,8 @@ Personal finance tracker built with Kotlin Multiplatform and Compose Multiplatfo
 - **Compose Multiplatform** — shared UI
 - **SQLDelight** — local database
 - **Koin** — dependency injection
-- **Decompose / Voyager** — navigation
+- **Decompose** — navigation
 - **Clean Architecture** — MVVM + UDF
-
-## Project Structure
-
-```
-kash/
-  shared/
-    domain/        — models, use cases
-    data/          — repositories, database, parsers
-    presentation/  — ViewModels, UI state
-  androidApp/
-  iosApp/
-```
 
 ## Build
 
@@ -43,7 +31,3 @@ kash/
 # Tests
 ./gradlew :shared:allTests
 ```
-
-## License
-
-TBD

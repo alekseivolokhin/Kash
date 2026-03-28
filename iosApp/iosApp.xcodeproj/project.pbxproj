@@ -129,6 +129,7 @@
 			);
 			inputPaths = (
 			);
+			alwaysOutOfDate = 1;
 			name = "Run Script - Build KMP Framework";
 			outputFileListPaths = (
 			);

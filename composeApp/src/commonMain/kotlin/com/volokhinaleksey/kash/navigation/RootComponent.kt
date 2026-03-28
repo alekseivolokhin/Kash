@@ -7,6 +7,9 @@ import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.volokhinaleksey.kash.navigation.home.HomeComponent
+import com.volokhinaleksey.kash.navigation.settings.SettingsComponent
+import com.volokhinaleksey.kash.navigation.stats.StatsComponent
+import com.volokhinaleksey.kash.navigation.transactions.TransactionsComponent
 import kotlinx.serialization.Serializable
 
 class RootComponent(
@@ -27,9 +30,9 @@ class RootComponent(
         componentContext: ComponentContext,
     ): RootChild = when (config) {
         is RootConfig.Home -> RootChild.Home(HomeComponent(componentContext))
-        is RootConfig.Transactions -> RootChild.Transactions(HomeComponent(componentContext))
-        is RootConfig.Stats -> RootChild.Stats(HomeComponent(componentContext))
-        is RootConfig.Settings -> RootChild.Settings(HomeComponent(componentContext))
+        is RootConfig.Transactions -> RootChild.Transactions(TransactionsComponent(componentContext))
+        is RootConfig.Stats -> RootChild.Stats(StatsComponent(componentContext))
+        is RootConfig.Settings -> RootChild.Settings(SettingsComponent(componentContext))
     }
 
     fun onHomeTabClicked() {
@@ -63,7 +66,7 @@ sealed interface RootConfig {
 
 sealed class RootChild {
     data class Home(val component: HomeComponent) : RootChild()
-    data class Transactions(val component: HomeComponent) : RootChild()
-    data class Stats(val component: HomeComponent) : RootChild()
-    data class Settings(val component: HomeComponent) : RootChild()
+    data class Transactions(val component: TransactionsComponent) : RootChild()
+    data class Stats(val component: StatsComponent) : RootChild()
+    data class Settings(val component: SettingsComponent) : RootChild()
 }

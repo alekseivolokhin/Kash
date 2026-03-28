@@ -7,6 +7,9 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.volokhinaleksey.kash.components.KashBottomBar
 import com.volokhinaleksey.kash.navigation.home.HomeScreen
+import com.volokhinaleksey.kash.navigation.settings.SettingsScreen
+import com.volokhinaleksey.kash.navigation.stats.StatsScreen
+import com.volokhinaleksey.kash.navigation.transactions.TransactionsScreen
 
 @Composable
 fun RootContent(component: RootComponent) {
@@ -27,9 +30,9 @@ fun RootContent(component: RootComponent) {
         Children(stack = childStack) { child ->
             when (val instance = child.instance) {
                 is RootChild.Home -> HomeScreen(instance.component)
-                is RootChild.Transactions -> HomeScreen(instance.component)
-                is RootChild.Stats -> HomeScreen(instance.component)
-                is RootChild.Settings -> HomeScreen(instance.component)
+                is RootChild.Transactions -> TransactionsScreen(instance.component)
+                is RootChild.Stats -> StatsScreen(instance.component)
+                is RootChild.Settings -> SettingsScreen(instance.component)
             }
         }
     }

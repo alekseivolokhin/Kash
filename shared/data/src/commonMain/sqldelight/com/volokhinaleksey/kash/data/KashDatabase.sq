@@ -1,0 +1,46 @@
+CREATE TABLE CategoryEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    icon TEXT NOT NULL,
+    color INTEGER NOT NULL,
+    is_custom INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE TransactionEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    amount REAL NOT NULL,
+    type TEXT NOT NULL,
+    category_id INTEGER NOT NULL,
+    date INTEGER NOT NULL,
+    comment TEXT NOT NULL DEFAULT '',
+    FOREIGN KEY (category_id) REFERENCES CategoryEntity(id)
+);
+
+-- Categories
+getAllCategories:
+SELECT * FROM CategoryEntity;
+
+getCategoryById:
+SELECT * FROM CategoryEntity WHERE id = ?;
+
+insertCategory:
+INSERT INTO CategoryEntity(name, icon, color, is_custom) VALUES (?, ?, ?, ?);
+
+deleteCategory:
+DELETE FROM CategoryEntity WHERE id = ?;
+
+-- Transactions
+getAllTransactions:
+SELECT * FROM TransactionEntity ORDER BY date DESC;
+
+getTransactionById:
+SELECT * FROM TransactionEntity WHERE id = ?;
+
+insertTransaction:
+INSERT INTO TransactionEntity(amount, type, category_id, date, comment) VALUES (?, ?, ?, ?, ?);
+
+updateTransaction:
+UPDATE TransactionEntity SET amount = ?, type = ?, category_id = ?, date = ?, comment = ? WHERE id = ?;
+
+deleteTransaction:
+DELETE FROM TransactionEntity WHERE id = ?;

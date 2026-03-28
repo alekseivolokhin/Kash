@@ -1,10 +1,90 @@
 package com.volokhinaleksey.kash.navigation.home
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.volokhinaleksey.kash.domain.model.Period
+import com.volokhinaleksey.kash.domain.model.TransactionType
+import com.volokhinaleksey.kash.domain.usecase.GetBalanceSummaryUseCase
+import com.volokhinaleksey.kash.domain.usecase.GetRecentTransactionsUseCase
+import com.volokhinaleksey.kash.presentation.home.HomeEvent
+import com.volokhinaleksey.kash.presentation.home.HomeUiState
+import com.volokhinaleksey.kash.presentation.home.TransactionUiModel
+import com.volokhinaleksey.kash.presentation.util.formatDateShort
+import com.volokhinaleksey.kash.presentation.util.formatTenge
+import com.volokhinaleksey.kash.presentation.util.formatTengeWithSign
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import kotlin.math.roundToInt
 
 class HomeComponent(
     componentContext: ComponentContext,
-): ComponentContext by componentContext {
+) : ComponentContext by componentContext, KoinComponent {
 
+    private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+
+    private val getBalanceSummary: GetBalanceSummaryUseCase by inject()
+    private val getRecentTransactions: GetRecentTransactionsUseCase by inject()
+
+    private val _selectedPeriod = MutableStateFlow(Period.THIS_MONTH)
+    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    val uiState: StateFlow<HomeUiState> = _uiState
+
+    init {
+        lifecycle.doOnDestroy { scope.cancel() }
+
+        _selectedPeriod.flatMapLatest { period ->
+            combine(
+                getBalanceSummary(period),
+                getRecentTransactions(period),
+            ) { summary, transactions ->
+                val transactionModels = transactions.map { (transaction, category) ->
+                    val isIncome = transaction.type == TransactionType.INCOME
+                    TransactionUiModel(
+                        id = transaction.id,
+                        name = transaction.comment.ifEmpty { category.name },
+                        category = category.name,
+                        amount = formatTengeWithSign(transaction.amount, isIncome),
+                        isIncome = isIncome,
+                        iconName = category.icon,
+                        date = formatDateShort(transaction.date),
+                    )
+                }
+
+                val percentRounded = summary.percentChangeFromLastMonth.roundToInt()
+                val percentSign = if (percentRounded >= 0) "+" else ""
+
+                HomeUiState.Success(
+                    totalBalance = formatTenge(summary.totalBalance),
+                    percentChange = "${percentSign}${percentRounded}% from last month",
+                    isPositiveChange = summary.percentChangeFromLastMonth >= 0,
+                    income = formatTenge(summary.income),
+                    expenses = formatTenge(summary.expenses),
+                    selectedPeriod = period,
+                    recentTransactions = transactionModels,
+                )
+            }
+        }.onEach { _uiState.value = it }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }
+
+    fun onEvent(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.PeriodSelected -> _selectedPeriod.value = event.period
+            is HomeEvent.AddTransactionClicked -> { /* TODO */ }
+            is HomeEvent.ViewAllTransactionsClicked -> { /* TODO */ }
+        }
+    }
 
 }

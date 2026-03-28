@@ -31,6 +31,7 @@ kotlin {
             implementation(projects.shared.presentation)
 
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

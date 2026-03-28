@@ -26,10 +26,10 @@ fun RootContent(component: RootComponent) {
                 onSettingsClick = component::onSettingsTabClicked,
             )
         }
-    ) {
+    ) { innerPadding ->
         Children(stack = childStack) { child ->
             when (val instance = child.instance) {
-                is RootChild.Home -> HomeScreen(instance.component)
+                is RootChild.Home -> HomeScreen(instance.component, contentPadding = innerPadding)
                 is RootChild.Transactions -> TransactionsScreen(instance.component)
                 is RootChild.Stats -> StatsScreen(instance.component)
                 is RootChild.Settings -> SettingsScreen(instance.component)

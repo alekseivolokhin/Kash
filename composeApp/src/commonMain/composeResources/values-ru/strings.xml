@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Kash</string>
+    <string name="notifications">Уведомления</string>
+    <string name="total_balance">ОБЩИЙ БАЛАНС</string>
+    <string name="income">Доходы</string>
+    <string name="expenses">Расходы</string>
+    <string name="this_month">Этот месяц</string>
+    <string name="last_month">Прошлый месяц</string>
+    <string name="quarter">Квартал</string>
+    <string name="recent_transactions">Последние операции</string>
+    <string name="view_all">Все</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_transactions">Операции</string>
+    <string name="nav_stats">Статистика</string>
+    <string name="nav_settings">Настройки</string>
+    <string name="add_transaction">Добавить операцию</string>
+</resources>

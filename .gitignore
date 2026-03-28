@@ -16,3 +16,9 @@
 .cxx
 local.properties
 .kotlin/
+
+# Xcode
+iosApp/iosApp.xcodeproj/xcuserdata/
+iosApp/iosApp.xcodeproj/project.xcworkspace/
+*.xcuserstate
+DerivedData/

@@ -5,21 +5,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.volokhinaleksey.kash.theme.ExpensePink
-import com.volokhinaleksey.kash.theme.IncomeGreen
+import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.theme.Kash
 
 @Composable
 fun TransactionItem(
@@ -27,50 +30,79 @@ fun TransactionItem(
     category: String,
     amount: String,
     isIncome: Boolean,
-    icon: @Composable () -> Unit,
+    iconName: String,
     modifier: Modifier = Modifier,
+    showDivider: Boolean = true,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-            .padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Box(
+    val swatch = categorySwatchFor(iconName)
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
             modifier = Modifier
-                .size(44.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
-            contentAlignment = Alignment.Center,
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            icon()
-        }
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(swatch.bg),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = mapCategoryIcon(iconName),
+                    contentDescription = null,
+                    tint = swatch.fg,
+                    modifier = Modifier.size(19.dp),
+                )
+            }
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(
-                text = name,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                text = category,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 15.sp,
+                        letterSpacing = (-0.2).sp,
+                    ),
+                    color = Kash.colors.text,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = category,
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        fontSize = 12.5.sp,
+                        letterSpacing = 0.sp,
+                    ),
+                    color = Kash.colors.sub,
+                )
+            }
+
+            AmountText(
+                amount = amount,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.sp,
+                    letterSpacing = (-0.3).sp,
+                ),
+                color = if (isIncome) Kash.colors.pos else Kash.colors.text,
+                currencyColor = Kash.colors.fade,
+                currencyWeight = FontWeight.Normal,
+                currencyScale = 0.8f,
             )
         }
-
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.titleSmall,
-            color = if (isIncome) IncomeGreen else ExpensePink,
-        )
+        if (showDivider) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Kash.colors.line),
+            )
+        }
     }
 }

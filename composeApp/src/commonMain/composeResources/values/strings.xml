@@ -13,5 +13,146 @@
     <string name="nav_transactions">Transactions</string>
     <string name="nav_stats">Stats</string>
     <string name="nav_settings">Settings</string>
-    <string name="add_transaction">Add transaction</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="back">Back</string>
+    <string name="expense">Expense</string>
+    <string name="amount_label">AMOUNT</string>
+    <string name="category_label">CATEGORY</string>
+    <string name="save_transaction">Save Transaction</string>
+    <string name="today_prefix">Today,</string>
+    <string name="note_placeholder">Lunch at NoMad</string>
+    <string name="cat_food">Food</string>
+    <string name="cat_transport">Transport</string>
+    <string name="cat_entertainment">Entertainment</string>
+    <string name="cat_salary">Salary</string>
+    <string name="cat_shopping">Shopping</string>
+    <string name="cat_electronics">Electronics</string>
+
+    <string name="transactions_title">Transactions</string>
+    <string name="transactions_search_hint">Search transactions…</string>
+    <string name="transactions_filter_all">All</string>
+    <string name="transactions_filter_income">Income</string>
+    <string name="transactions_filter_expense">Expense</string>
+    <string name="transactions_group_today">Today</string>
+    <string name="transactions_group_yesterday">Yesterday</string>
+    <string name="transactions_empty">No transactions yet</string>
+
+    <string name="settings_personal_account">Personal Account</string>
+    <string name="settings_premium">PREMIUM</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_section_data">Data</string>
+    <string name="settings_section_about">About</string>
+    <string name="settings_base_currency">Base Currency</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_appearance_light">Light</string>
+    <string name="settings_appearance_dark">Dark</string>
+    <string name="settings_appearance_system">System</string>
+    <string name="settings_import_transactions">Import Transactions</string>
+    <string name="settings_export_csv">Export to CSV</string>
+    <string name="settings_app_version">App Version</string>
+    <string name="settings_sign_out">Sign Out</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="currency_picker_title">Base Currency</string>
+    <string name="currency_picker_search_hint">Search currency or code…</string>
+    <string name="currency_picker_section_popular">Popular</string>
+    <string name="currency_picker_section_all">All currencies · A–Z</string>
+    <string name="currency_picker_confirm">Use %1$s as base currency</string>
+    <string name="currency_picker_caption">All amounts will be displayed in this currency</string>
+    <string name="currency_picker_empty">No currencies match \"%1$s\"</string>
+    <string name="currency_name_kzt">Kazakhstani Tenge</string>
+    <string name="currency_name_usd">US Dollar</string>
+    <string name="currency_name_eur">Euro</string>
+    <string name="currency_name_rub">Russian Ruble</string>
+    <string name="currency_name_gbp">British Pound</string>
+    <string name="currency_name_aed">UAE Dirham</string>
+    <string name="currency_name_amd">Armenian Dram</string>
+    <string name="currency_name_byn">Belarusian Ruble</string>
+    <string name="currency_name_chf">Swiss Franc</string>
+    <string name="currency_name_cny">Chinese Yuan</string>
+    <string name="currency_name_gel">Georgian Lari</string>
+    <string name="currency_name_jpy">Japanese Yen</string>
+    <string name="currency_name_kgs">Kyrgyzstani Som</string>
+    <string name="currency_name_try">Turkish Lira</string>
+    <string name="currency_name_uah">Ukrainian Hryvnia</string>
+    <string name="currency_name_uzs">Uzbekistani Som</string>
+
+    <string name="import_top_bar_title">Import</string>
+    <string name="import_screen_title">Import a bank statement</string>
+    <string name="import_screen_subtitle">Drop a CSV or PDF — Kash auto-detects the bank and categorizes everything before saving.</string>
+    <string name="import_choose_file">Choose file</string>
+    <string name="import_drop_hint">CSV · PDF · max 10 MB</string>
+    <string name="import_supported_banks">Supported banks</string>
+    <string name="import_other_bank_hint">Other bank? Kash will try to detect the columns automatically — you can map fields manually before importing.</string>
+
+    <string name="import_preview_top_bar_title">Preview Import</string>
+    <string name="import_transactions_count_format">%1$d transactions · %2$s</string>
+    <string name="import_stat_new">New</string>
+    <string name="import_stat_duplicates">Duplicates</string>
+    <string name="import_stat_need_review">Need review</string>
+    <string name="import_pick_category">Pick a category</string>
+    <string name="import_action">Import %1$d transactions</string>
+
+    <string name="export_top_bar_title">Export</string>
+    <string name="export_screen_title">Export to CSV</string>
+    <string name="export_screen_subtitle">Download all your transactions as a spreadsheet — open in Excel, Numbers, or any tool.</string>
+    <string name="export_period_label">Period</string>
+    <string name="export_period_this_month">This Month</string>
+    <string name="export_period_last_3_months">Last 3 Months</string>
+    <string name="export_period_this_year">This Year</string>
+    <string name="export_period_all_time">All time</string>
+    <string name="export_period_custom">Custom range</string>
+    <string name="export_tx_count_format">%1$s tx</string>
+    <string name="export_options_label">Options</string>
+    <string name="export_option_include_category">Include category</string>
+    <string name="export_option_include_category_sub">Adds a column with category name</string>
+    <string name="export_option_include_comment">Include comment</string>
+    <string name="export_option_include_comment_sub">Adds the transaction note</string>
+    <string name="export_option_group_by_month">Group by month</string>
+    <string name="export_option_group_by_month_sub">Adds blank separators between months</string>
+    <string name="export_format_suffix"> · UTF-8 · separator: comma</string>
+    <string name="export_action">Export %1$d transactions</string>
+
+    <string name="onb_logo_letter">K</string>
+    <string name="onb_splash_title">Money you\nactually see.</string>
+    <string name="onb_splash_subtitle">Track expenses, import statements, and watch your habits — all on your phone, nothing in the cloud.</string>
+    <string name="onb_feature_imports_title">Manual &amp; imports</string>
+    <string name="onb_feature_imports_sub">CSV/PDF from Tinkoff, Sber, Revolut</string>
+    <string name="onb_feature_categories_title">Smart categories</string>
+    <string name="onb_feature_categories_sub">Auto-tag transactions by keywords</string>
+    <string name="onb_feature_local_title">Local first</string>
+    <string name="onb_feature_local_sub">Your data stays on the device</string>
+    <string name="onb_get_started">Get started</string>
+    <string name="onb_login_hint">I already have an account</string>
+
+    <string name="onb_step_format">STEP %1$d OF %2$d</string>
+
+    <string name="onb_terms_title">A couple of agreements first</string>
+    <string name="onb_terms_subtitle">Kash stores everything locally on your device. We need your consent to a few things before we begin.</string>
+    <string name="onb_check_terms_title">I agree to the Terms of Service</string>
+    <string name="onb_check_terms_sub">How Kash works and your responsibilities</string>
+    <string name="onb_check_privacy_title">I agree to the Privacy Policy</string>
+    <string name="onb_check_privacy_sub">Your data lives on your device — we don\'t collect it</string>
+    <string name="onb_check_crash_title">Anonymous crash reports</string>
+    <string name="onb_check_crash_sub">Help us fix bugs faster · optional</string>
+    <string name="onb_terms_banner">You can change these any time in Settings · Privacy.</string>
+    <string name="onb_continue">Continue</string>
+
+    <string name="onb_profile_title">Set up your profile</string>
+    <string name="onb_profile_subtitle">Just so Kash knows what to call you. Everything stays on this device.</string>
+    <string name="onb_display_name_label">DISPLAY NAME</string>
+    <string name="onb_display_name_hint">You can change this any time</string>
+    <string name="onb_display_name_placeholder">Alex</string>
+    <string name="onb_base_currency_label">BASE CURRENCY</string>
+    <string name="onb_currency_kzt_name">Tenge</string>
+    <string name="onb_currency_usd_name">Dollar</string>
+    <string name="onb_currency_eur_name">Euro</string>
+    <string name="onb_currency_rub_name">Ruble</string>
+    <string name="onb_start_tracking">Start tracking</string>
+
+    <string name="empty_home_title">No transactions yet</string>
+    <string name="empty_home_subtitle">Add your first one manually, or import a CSV/PDF statement from your bank.</string>
+    <string name="empty_home_action_add">Add transaction</string>
+    <string name="empty_home_action_import">Import statement</string>
 </resources>

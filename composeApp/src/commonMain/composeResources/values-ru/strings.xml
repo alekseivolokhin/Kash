@@ -14,4 +14,136 @@
     <string name="nav_stats">Статистика</string>
     <string name="nav_settings">Настройки</string>
     <string name="add_transaction">Добавить операцию</string>
+    <string name="back">Назад</string>
+    <string name="expense">Расход</string>
+    <string name="amount_label">СУММА</string>
+    <string name="category_label">КАТЕГОРИЯ</string>
+    <string name="save_transaction">Сохранить</string>
+    <string name="today_prefix">Сегодня,</string>
+    <string name="note_placeholder">Обед в NoMad</string>
+    <string name="cat_food">Еда</string>
+    <string name="cat_transport">Транспорт</string>
+    <string name="cat_entertainment">Развлечения</string>
+    <string name="cat_salary">Зарплата</string>
+    <string name="cat_shopping">Покупки</string>
+    <string name="cat_electronics">Электроника</string>
+
+    <string name="settings_personal_account">Личный аккаунт</string>
+    <string name="settings_premium">PREMIUM</string>
+    <string name="settings_section_general">Общее</string>
+    <string name="settings_section_data">Данные</string>
+    <string name="settings_section_about">О приложении</string>
+    <string name="settings_base_currency">Базовая валюта</string>
+    <string name="settings_appearance">Тема оформления</string>
+    <string name="settings_appearance_light">Светлая</string>
+    <string name="settings_appearance_dark">Тёмная</string>
+    <string name="settings_appearance_system">Системная</string>
+    <string name="settings_import_transactions">Импорт операций</string>
+    <string name="settings_export_csv">Экспорт в CSV</string>
+    <string name="settings_app_version">Версия приложения</string>
+    <string name="settings_sign_out">Выйти из аккаунта</string>
+
+    <string name="cancel">Отмена</string>
+
+    <string name="currency_picker_title">Базовая валюта</string>
+    <string name="currency_picker_search_hint">Поиск по названию или коду…</string>
+    <string name="currency_picker_section_popular">Популярные</string>
+    <string name="currency_picker_section_all">Все валюты · A–Я</string>
+    <string name="currency_picker_confirm">Использовать %1$s</string>
+    <string name="currency_picker_caption">Все суммы будут отображаться в этой валюте</string>
+    <string name="currency_picker_empty">Не найдено валют по запросу \"%1$s\"</string>
+    <string name="currency_name_kzt">Казахстанский тенге</string>
+    <string name="currency_name_usd">Доллар США</string>
+    <string name="currency_name_eur">Евро</string>
+    <string name="currency_name_rub">Российский рубль</string>
+    <string name="currency_name_gbp">Фунт стерлингов</string>
+    <string name="currency_name_aed">Дирхам ОАЭ</string>
+    <string name="currency_name_amd">Армянский драм</string>
+    <string name="currency_name_byn">Белорусский рубль</string>
+    <string name="currency_name_chf">Швейцарский франк</string>
+    <string name="currency_name_cny">Китайский юань</string>
+    <string name="currency_name_gel">Грузинский лари</string>
+    <string name="currency_name_jpy">Японская иена</string>
+    <string name="currency_name_kgs">Киргизский сом</string>
+    <string name="currency_name_try">Турецкая лира</string>
+    <string name="currency_name_uah">Украинская гривна</string>
+    <string name="currency_name_uzs">Узбекский сум</string>
+
+    <string name="import_top_bar_title">Импорт</string>
+    <string name="import_screen_title">Импортируйте выписку</string>
+    <string name="import_screen_subtitle">Загрузите CSV или PDF — Kash сам определит банк и расставит категории перед сохранением.</string>
+    <string name="import_choose_file">Выбрать файл</string>
+    <string name="import_drop_hint">CSV · PDF · до 10 МБ</string>
+    <string name="import_supported_banks">Поддерживаемые банки</string>
+    <string name="import_other_bank_hint">Другой банк? Kash попробует определить колонки автоматически — вы сможете сопоставить поля вручную перед импортом.</string>
+
+    <string name="import_preview_top_bar_title">Предпросмотр импорта</string>
+    <string name="import_transactions_count_format">%1$d операций · %2$s</string>
+    <string name="import_stat_new">Новые</string>
+    <string name="import_stat_duplicates">Дубликаты</string>
+    <string name="import_stat_need_review">К проверке</string>
+    <string name="import_pick_category">Выберите категорию</string>
+    <string name="import_action">Импортировать %1$d операций</string>
+
+    <string name="export_top_bar_title">Экспорт</string>
+    <string name="export_screen_title">Экспорт в CSV</string>
+    <string name="export_screen_subtitle">Скачайте все операции таблицей — откройте в Excel, Numbers или любом другом инструменте.</string>
+    <string name="export_period_label">Период</string>
+    <string name="export_period_this_month">Этот месяц</string>
+    <string name="export_period_last_3_months">Последние 3 месяца</string>
+    <string name="export_period_this_year">Этот год</string>
+    <string name="export_period_all_time">Всё время</string>
+    <string name="export_period_custom">Указать диапазон</string>
+    <string name="export_tx_count_format">%1$s оп.</string>
+    <string name="export_options_label">Опции</string>
+    <string name="export_option_include_category">Категория</string>
+    <string name="export_option_include_category_sub">Добавит колонку с названием категории</string>
+    <string name="export_option_include_comment">Комментарий</string>
+    <string name="export_option_include_comment_sub">Добавит примечание к операции</string>
+    <string name="export_option_group_by_month">Группировать по месяцам</string>
+    <string name="export_option_group_by_month_sub">Пустые строки-разделители между месяцами</string>
+    <string name="export_format_suffix"> · UTF-8 · разделитель: запятая</string>
+    <string name="export_action">Экспортировать %1$d операций</string>
+
+    <string name="onb_logo_letter">K</string>
+    <string name="onb_splash_title">Деньги,\nкоторые видны.</string>
+    <string name="onb_splash_subtitle">Учитывайте расходы, импортируйте выписки и следите за привычками — всё в телефоне, ничего в облаке.</string>
+    <string name="onb_feature_imports_title">Ручной ввод и импорт</string>
+    <string name="onb_feature_imports_sub">CSV/PDF из Tinkoff, Сбера, Revolut</string>
+    <string name="onb_feature_categories_title">Умные категории</string>
+    <string name="onb_feature_categories_sub">Авто-теги по ключевым словам</string>
+    <string name="onb_feature_local_title">Только локально</string>
+    <string name="onb_feature_local_sub">Данные остаются на устройстве</string>
+    <string name="onb_get_started">Начать</string>
+    <string name="onb_login_hint">У меня уже есть аккаунт</string>
+
+    <string name="onb_step_format">ШАГ %1$d ИЗ %2$d</string>
+
+    <string name="onb_terms_title">Сначала пара соглашений</string>
+    <string name="onb_terms_subtitle">Kash хранит всё локально на вашем устройстве. Нам нужно ваше согласие на пару вещей, прежде чем начать.</string>
+    <string name="onb_check_terms_title">Принимаю Условия использования</string>
+    <string name="onb_check_terms_sub">Как работает Kash и ваши обязательства</string>
+    <string name="onb_check_privacy_title">Принимаю Политику конфиденциальности</string>
+    <string name="onb_check_privacy_sub">Ваши данные на вашем устройстве — мы их не собираем</string>
+    <string name="onb_check_crash_title">Анонимные отчёты о сбоях</string>
+    <string name="onb_check_crash_sub">Помогите нам быстрее находить ошибки · по желанию</string>
+    <string name="onb_terms_banner">Это можно изменить в любой момент в Настройках · Приватность.</string>
+    <string name="onb_continue">Продолжить</string>
+
+    <string name="onb_profile_title">Настройте профиль</string>
+    <string name="onb_profile_subtitle">Чтобы Kash знал, как к вам обращаться. Всё остаётся на этом устройстве.</string>
+    <string name="onb_display_name_label">ОТОБРАЖАЕМОЕ ИМЯ</string>
+    <string name="onb_display_name_hint">Это можно изменить в любой момент</string>
+    <string name="onb_display_name_placeholder">Алекс</string>
+    <string name="onb_base_currency_label">БАЗОВАЯ ВАЛЮТА</string>
+    <string name="onb_currency_kzt_name">Тенге</string>
+    <string name="onb_currency_usd_name">Доллар</string>
+    <string name="onb_currency_eur_name">Евро</string>
+    <string name="onb_currency_rub_name">Рубль</string>
+    <string name="onb_start_tracking">Начать учёт</string>
+
+    <string name="empty_home_title">Пока нет операций</string>
+    <string name="empty_home_subtitle">Добавьте первую вручную или импортируйте выписку CSV/PDF из вашего банка.</string>
+    <string name="empty_home_action_add">Добавить операцию</string>
+    <string name="empty_home_action_import">Импорт выписки</string>
 </resources>

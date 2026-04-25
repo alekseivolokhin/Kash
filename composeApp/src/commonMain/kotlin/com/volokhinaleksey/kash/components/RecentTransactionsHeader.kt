@@ -9,6 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.theme.Kash
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.recent_transactions
 import kash.composeapp.generated.resources.view_all
@@ -26,13 +29,20 @@ fun RecentTransactionsHeader(
     ) {
         Text(
             text = stringResource(Res.string.recent_transactions),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 17.sp,
+                letterSpacing = (-0.3).sp,
+            ),
+            color = Kash.colors.text,
         )
         Text(
             text = stringResource(Res.string.view_all),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 13.sp,
+            ),
+            color = Kash.colors.accentSoftInk,
             modifier = Modifier.clickable(onClick = onViewAllClick),
         )
     }

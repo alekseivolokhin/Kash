@@ -4,6 +4,7 @@ import com.volokhinaleksey.kash.domain.model.Period
 
 sealed interface HomeUiState {
     data object Loading : HomeUiState
+    data object Empty : HomeUiState
     data class Success(
         val totalBalance: String,
         val percentChange: String,

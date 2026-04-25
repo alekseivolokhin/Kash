@@ -10,6 +10,6 @@ fun formatTenge(amount: Double): String {
 }
 
 fun formatTengeWithSign(amount: Double, isIncome: Boolean): String {
-    val sign = if (isIncome) "+" else "-"
+    val sign = if (isIncome) "+" else "−"
     return "$sign${formatTenge(amount)}"
 }

@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.volokhinaleksey.kash.domain.model.Period
 import com.volokhinaleksey.kash.domain.model.TransactionType
+import com.volokhinaleksey.kash.domain.repository.TransactionRepository
 import com.volokhinaleksey.kash.domain.usecase.GetBalanceSummaryUseCase
 import com.volokhinaleksey.kash.domain.usecase.GetRecentTransactionsUseCase
 import com.volokhinaleksey.kash.presentation.home.HomeEvent
@@ -29,12 +30,16 @@ import kotlin.math.roundToInt
 
 class HomeComponent(
     componentContext: ComponentContext,
+    private val onNavigateToAddTransaction: () -> Unit,
+    private val onNavigateToTransactions: () -> Unit,
+    private val onNavigateToImport: () -> Unit,
 ) : ComponentContext by componentContext, KoinComponent {
 
     private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
 
     private val getBalanceSummary: GetBalanceSummaryUseCase by inject()
     private val getRecentTransactions: GetRecentTransactionsUseCase by inject()
+    private val transactionRepository: TransactionRepository by inject()
 
     private val _selectedPeriod = MutableStateFlow(Period.THIS_MONTH)
     private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
@@ -45,9 +50,14 @@ class HomeComponent(
 
         _selectedPeriod.flatMapLatest { period ->
             combine(
+                transactionRepository.getAllTransactions(),
                 getBalanceSummary(period),
                 getRecentTransactions(period),
-            ) { summary, transactions ->
+            ) { allTransactions, summary, transactions ->
+                if (allTransactions.isEmpty()) {
+                    return@combine HomeUiState.Empty
+                }
+
                 val transactionModels = transactions.map { (transaction, category) ->
                     val isIncome = transaction.type == TransactionType.INCOME
                     TransactionUiModel(
@@ -66,7 +76,7 @@ class HomeComponent(
 
                 HomeUiState.Success(
                     totalBalance = formatTenge(summary.totalBalance),
-                    percentChange = "${percentSign}${percentRounded}% from last month",
+                    percentChange = "${percentSign}${percentRounded}% vs last month",
                     isPositiveChange = summary.percentChangeFromLastMonth >= 0,
                     income = formatTenge(summary.income),
                     expenses = formatTenge(summary.expenses),
@@ -82,8 +92,9 @@ class HomeComponent(
     fun onEvent(event: HomeEvent) {
         when (event) {
             is HomeEvent.PeriodSelected -> _selectedPeriod.value = event.period
-            is HomeEvent.AddTransactionClicked -> { /* TODO */ }
-            is HomeEvent.ViewAllTransactionsClicked -> { /* TODO */ }
+            is HomeEvent.AddTransactionClicked -> onNavigateToAddTransaction()
+            is HomeEvent.ViewAllTransactionsClicked -> onNavigateToTransactions()
+            is HomeEvent.ImportStatementClicked -> onNavigateToImport()
         }
     }
 

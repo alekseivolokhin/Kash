@@ -209,13 +209,7 @@ private fun ProfileCard(state: SettingsUiState) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            KashLogoBadge(
-                letter = state.userInitials,
-                size = 44.dp,
-                radius = 14.dp,
-                fontSize = 16.sp,
-                letterSpacing = (-0.5).sp,
-            )
+            KashLogoBadge(size = 44.dp)
             Column(modifier = Modifier.weight(1f)) {
                 KashSectionLabel(text = stringResource(Res.string.settings_personal_account))
                 Spacer(Modifier.height(2.dp))

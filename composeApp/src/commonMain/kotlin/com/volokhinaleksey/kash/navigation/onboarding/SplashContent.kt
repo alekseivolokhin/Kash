@@ -36,7 +36,6 @@ import com.volokhinaleksey.kash.theme.InterTightFontFamily
 import com.volokhinaleksey.kash.theme.Kash
 import com.volokhinaleksey.kash.theme.KashTheme
 import kash.composeapp.generated.resources.Res
-import kash.composeapp.generated.resources.app_name
 import kash.composeapp.generated.resources.onb_feature_categories_sub
 import kash.composeapp.generated.resources.onb_feature_categories_title
 import kash.composeapp.generated.resources.onb_feature_imports_sub
@@ -66,14 +65,7 @@ internal fun SplashContent(
             verticalArrangement = Arrangement.Center,
         ) {
             Spacer(Modifier.height(24.dp))
-            KashLogoBadge(
-                letter = stringResource(Res.string.app_name).take(1),
-                size = 96.dp,
-                radius = 28.dp,
-                fontSize = 48.sp,
-                letterSpacing = (-2).sp,
-            )
-
+            KashLogoBadge(size = 96.dp)
             Spacer(Modifier.height(28.dp))
             Text(
                 text = stringResource(Res.string.onb_splash_title),

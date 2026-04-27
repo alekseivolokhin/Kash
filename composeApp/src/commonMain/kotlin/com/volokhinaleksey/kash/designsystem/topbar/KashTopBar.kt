@@ -1,5 +1,6 @@
 package com.volokhinaleksey.kash.designsystem.topbar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,8 @@ import com.volokhinaleksey.kash.theme.Kash
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.app_name
 import kash.composeapp.generated.resources.back
+import kash.composeapp.generated.resources.kash_logo
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -97,7 +100,11 @@ fun KashLogoTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                KashLogoBadge(letter = stringResource(Res.string.app_name).take(1))
+                Image(
+                    painter = painterResource(Res.drawable.kash_logo),
+                    contentDescription = null,
+                    modifier = Modifier.size(32.dp),
+                )
                 if (largeTitle == null) {
                     Text(
                         text = stringResource(Res.string.app_name),

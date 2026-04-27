@@ -92,8 +92,8 @@ private fun BottomBarTab(
     onClick: () -> Unit,
 ) {
     val labelColor = if (selected) Kash.colors.text else Kash.colors.sub
-    val iconTint = if (selected) Kash.colors.text else Kash.colors.sub
-    val pillBg = if (selected) Kash.colors.card else Color.Transparent
+    val iconTint = if (selected) Kash.colors.accent else Kash.colors.fade
+    val pillBg = if (selected) Kash.colors.accentSoft else Color.Transparent
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

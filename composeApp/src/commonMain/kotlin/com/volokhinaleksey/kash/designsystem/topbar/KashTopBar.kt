@@ -119,6 +119,17 @@ fun KashLogoTopBar(
 }
 
 @Composable
+fun KashSectionTopBar(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    KashTopBar(
+        modifier = modifier,
+        title = title,
+    )
+}
+
+@Composable
 fun KashBackTopBar(
     title: String,
     onBackClick: () -> Unit,

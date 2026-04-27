@@ -33,7 +33,7 @@ import com.volokhinaleksey.kash.components.TransactionGroupCard
 import com.volokhinaleksey.kash.designsystem.KashDimens
 import com.volokhinaleksey.kash.designsystem.chip.KashFilterChip
 import com.volokhinaleksey.kash.designsystem.field.KashSearchField
-import com.volokhinaleksey.kash.designsystem.topbar.KashLogoTopBar
+import com.volokhinaleksey.kash.designsystem.topbar.KashSectionTopBar
 import com.volokhinaleksey.kash.presentation.transactions.TransactionGroupLabel
 import com.volokhinaleksey.kash.presentation.transactions.TransactionGroupUiModel
 import com.volokhinaleksey.kash.presentation.transactions.TransactionRowUiModel
@@ -87,7 +87,7 @@ private fun TransactionsContent(
             ),
         ) {
             item(key = "topbar") {
-                KashLogoTopBar(largeTitle = stringResource(Res.string.transactions_title))
+                KashSectionTopBar(title = stringResource(Res.string.transactions_title))
                 Spacer(Modifier.height(16.dp))
             }
             item(key = "search") {

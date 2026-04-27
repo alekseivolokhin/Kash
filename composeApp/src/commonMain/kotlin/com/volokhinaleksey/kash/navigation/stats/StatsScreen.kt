@@ -48,7 +48,7 @@ import com.volokhinaleksey.kash.designsystem.KashDimens
 import com.volokhinaleksey.kash.designsystem.button.KashButton
 import com.volokhinaleksey.kash.designsystem.card.KashCard
 import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
-import com.volokhinaleksey.kash.designsystem.topbar.KashLogoTopBar
+import com.volokhinaleksey.kash.designsystem.topbar.KashSectionTopBar
 import com.volokhinaleksey.kash.domain.model.Period
 import com.volokhinaleksey.kash.presentation.stats.MonthlyBarUiModel
 import com.volokhinaleksey.kash.presentation.stats.StatsEvent
@@ -115,7 +115,7 @@ private fun StatsContent(
 
 @Composable
 private fun StatsTopBar() {
-    KashLogoTopBar(largeTitle = stringResource(Res.string.stats_title))
+    KashSectionTopBar(title = stringResource(Res.string.stats_title))
 }
 
 @Composable

@@ -54,7 +54,7 @@ import com.volokhinaleksey.kash.designsystem.chip.KashSegmentedControl
 import com.volokhinaleksey.kash.designsystem.chip.KashSegmentItem
 import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
 import com.volokhinaleksey.kash.designsystem.topbar.KashLogoBadge
-import com.volokhinaleksey.kash.designsystem.topbar.KashLogoTopBar
+import com.volokhinaleksey.kash.designsystem.topbar.KashSectionTopBar
 import com.volokhinaleksey.kash.presentation.settings.SettingsEvent
 import com.volokhinaleksey.kash.presentation.settings.SettingsUiState
 import com.volokhinaleksey.kash.presentation.settings.ThemeMode
@@ -130,7 +130,7 @@ private fun SettingsContent(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = contentPadding.calculateBottomPadding() + 24.dp),
         ) {
-            KashLogoTopBar(largeTitle = stringResource(Res.string.nav_settings))
+            KashSectionTopBar(title = stringResource(Res.string.nav_settings))
 
             Column(
                 modifier = Modifier

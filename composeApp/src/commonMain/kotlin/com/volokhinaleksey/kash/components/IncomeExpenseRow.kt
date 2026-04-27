@@ -1,8 +1,6 @@
 package com.volokhinaleksey.kash.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.designsystem.card.KashCard
 import com.volokhinaleksey.kash.theme.Kash
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.expenses
@@ -72,56 +71,54 @@ private fun SummaryCard(
     iconFg: Color,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(18.dp))
-            .background(Kash.colors.card)
-            .border(
-                border = BorderStroke(1.dp, Kash.colors.line),
-                shape = RoundedCornerShape(18.dp),
-            )
-            .padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 16.dp),
+    KashCard(
+        modifier = modifier,
+        radius = 18.dp,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        Column(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 16.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(22.dp)
-                    .clip(RoundedCornerShape(7.dp))
-                    .background(iconBg),
-                contentAlignment = Alignment.Center,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconFg,
-                    modifier = Modifier.size(11.dp),
+                Box(
+                    modifier = Modifier
+                        .size(22.dp)
+                        .clip(RoundedCornerShape(7.dp))
+                        .background(iconBg),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = iconFg,
+                        modifier = Modifier.size(11.dp),
+                    )
+                }
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.5.sp,
+                        letterSpacing = 0.sp,
+                    ),
+                    color = Kash.colors.sub,
                 )
             }
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 12.5.sp,
-                    letterSpacing = 0.sp,
+            Spacer(Modifier.height(12.dp))
+            AmountText(
+                amount = amount,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 22.sp,
+                    letterSpacing = (-0.8).sp,
                 ),
-                color = Kash.colors.sub,
+                color = Kash.colors.text,
+                currencyColor = Kash.colors.fade,
+                currencyWeight = FontWeight.Normal,
+                currencyScale = 14f / 22f,
             )
         }
-        Spacer(Modifier.height(12.dp))
-        AmountText(
-            amount = amount,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 22.sp,
-                letterSpacing = (-0.8).sp,
-            ),
-            color = Kash.colors.text,
-            currencyColor = Kash.colors.fade,
-            currencyWeight = FontWeight.Normal,
-            currencyScale = 14f / 22f,
-        )
     }
 }

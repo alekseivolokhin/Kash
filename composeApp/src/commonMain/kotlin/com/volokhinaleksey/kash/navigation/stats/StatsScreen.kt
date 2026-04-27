@@ -2,7 +2,6 @@ package com.volokhinaleksey.kash.navigation.stats
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,18 +37,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.volokhinaleksey.kash.components.AmountText
 import com.volokhinaleksey.kash.components.PeriodFilterChips
-import com.volokhinaleksey.kash.components.TransactionsTopBar
 import com.volokhinaleksey.kash.components.categorySwatchFor
 import com.volokhinaleksey.kash.components.mapCategoryIcon
+import com.volokhinaleksey.kash.designsystem.KashDimens
+import com.volokhinaleksey.kash.designsystem.button.KashButton
+import com.volokhinaleksey.kash.designsystem.card.KashCard
+import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
+import com.volokhinaleksey.kash.designsystem.topbar.KashLogoTopBar
+import com.volokhinaleksey.kash.domain.model.Period
 import com.volokhinaleksey.kash.presentation.stats.MonthlyBarUiModel
 import com.volokhinaleksey.kash.presentation.stats.StatsEvent
 import com.volokhinaleksey.kash.presentation.stats.StatsUiState
 import com.volokhinaleksey.kash.presentation.stats.TopCategoryUiModel
 import com.volokhinaleksey.kash.theme.Kash
+import com.volokhinaleksey.kash.theme.KashTheme
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.expenses
 import kash.composeapp.generated.resources.income
@@ -65,8 +70,7 @@ import kash.composeapp.generated.resources.stats_title
 import kash.composeapp.generated.resources.stats_top_categories
 import kash.composeapp.generated.resources.stats_vs_last_month
 import org.jetbrains.compose.resources.stringResource
-
-private val HorizontalPadding = 20.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun StatsScreen(
@@ -74,22 +78,33 @@ fun StatsScreen(
     contentPadding: PaddingValues = PaddingValues(),
 ) {
     val state by component.uiState.collectAsState()
-    val onEvent = remember(component) { component::onEvent }
+    StatsContent(
+        state = state,
+        onEvent = component::onEvent,
+        contentPadding = contentPadding,
+    )
+}
 
+@Composable
+private fun StatsContent(
+    state: StatsUiState,
+    onEvent: (StatsEvent) -> Unit,
+    contentPadding: PaddingValues = PaddingValues(),
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Kash.colors.bg)
             .padding(top = contentPadding.calculateTopPadding()),
     ) {
-        when (val current = state) {
-            StatsUiState.Loading -> StatsTopBarSection()
-            StatsUiState.Empty -> EmptyStatsContent(
+        when (state) {
+            StatsUiState.Loading -> StatsTopBar()
+            StatsUiState.Empty -> StatsEmptyContent(
                 onAddTransaction = { onEvent(StatsEvent.AddTransactionClicked) },
                 bottomPadding = contentPadding.calculateBottomPadding(),
             )
-            is StatsUiState.Success -> StatsContent(
-                state = current,
+            is StatsUiState.Success -> StatsSuccessContent(
+                state = state,
                 onEvent = onEvent,
                 bottomPadding = contentPadding.calculateBottomPadding(),
             )
@@ -98,24 +113,29 @@ fun StatsScreen(
 }
 
 @Composable
-private fun StatsContent(
+private fun StatsTopBar() {
+    KashLogoTopBar(largeTitle = stringResource(Res.string.stats_title))
+}
+
+@Composable
+private fun StatsSuccessContent(
     state: StatsUiState.Success,
     onEvent: (StatsEvent) -> Unit,
-    bottomPadding: androidx.compose.ui.unit.Dp,
+    bottomPadding: Dp,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(top = 8.dp, bottom = bottomPadding + 24.dp),
+        contentPadding = PaddingValues(bottom = bottomPadding + 24.dp),
     ) {
         item(key = "topbar") {
-            StatsTopBarSection()
+            StatsTopBar()
             Spacer(Modifier.height(16.dp))
         }
         item(key = "period") {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = HorizontalPadding),
+                    .padding(horizontal = KashDimens.ScreenHorizontalPadding),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 PeriodFilterChips(
@@ -129,7 +149,7 @@ private fun StatsContent(
             StatsSummaryRow(
                 income = state.income,
                 expenses = state.expenses,
-                modifier = Modifier.padding(horizontal = HorizontalPadding),
+                modifier = Modifier.padding(horizontal = KashDimens.ScreenHorizontalPadding),
             )
             Spacer(Modifier.height(12.dp))
         }
@@ -137,21 +157,21 @@ private fun StatsContent(
             ComparisonBanner(
                 percent = state.comparisonPercent,
                 isSpendingDown = state.isSpendingDown,
-                modifier = Modifier.padding(horizontal = HorizontalPadding),
+                modifier = Modifier.padding(horizontal = KashDimens.ScreenHorizontalPadding),
             )
             Spacer(Modifier.height(22.dp))
         }
         item(key = "overview_header") {
             SectionHeader(
                 text = stringResource(Res.string.stats_overview),
-                modifier = Modifier.padding(horizontal = HorizontalPadding),
+                modifier = Modifier.padding(horizontal = KashDimens.ScreenHorizontalPadding),
             )
             Spacer(Modifier.height(14.dp))
         }
         item(key = "chart") {
             MonthlyChartCard(
                 bars = state.monthlyChart,
-                modifier = Modifier.padding(horizontal = HorizontalPadding),
+                modifier = Modifier.padding(horizontal = KashDimens.ScreenHorizontalPadding),
             )
             Spacer(Modifier.height(22.dp))
         }
@@ -159,7 +179,7 @@ private fun StatsContent(
             item(key = "categories_header") {
                 SectionHeader(
                     text = stringResource(Res.string.stats_top_categories),
-                    modifier = Modifier.padding(horizontal = HorizontalPadding),
+                    modifier = Modifier.padding(horizontal = KashDimens.ScreenHorizontalPadding),
                 )
                 Spacer(Modifier.height(12.dp))
             }
@@ -167,17 +187,12 @@ private fun StatsContent(
                 TopCategoryRow(
                     category = category,
                     modifier = Modifier
-                        .padding(horizontal = HorizontalPadding)
+                        .padding(horizontal = KashDimens.ScreenHorizontalPadding)
                         .padding(bottom = 12.dp),
                 )
             }
         }
     }
-}
-
-@Composable
-private fun StatsTopBarSection() {
-    TransactionsTopBar(title = stringResource(Res.string.stats_title))
 }
 
 @Composable
@@ -209,33 +224,25 @@ private fun StatsSummaryCard(
     amount: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(18.dp))
-            .background(Kash.colors.card)
-            .border(1.dp, Kash.colors.line, RoundedCornerShape(18.dp))
-            .padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 16.dp),
-    ) {
-        Text(
-            text = label.uppercase(),
-            color = Kash.colors.sub,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 1.2.sp,
-        )
-        Spacer(Modifier.height(10.dp))
-        AmountText(
-            amount = amount,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 22.sp,
-                letterSpacing = (-0.8).sp,
-            ),
-            color = Kash.colors.text,
-            currencyColor = Kash.colors.fade,
-            currencyWeight = FontWeight.Normal,
-            currencyScale = 14f / 22f,
-        )
+    KashCard(modifier = modifier, radius = 18.dp) {
+        Column(
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 16.dp),
+        ) {
+            KashSectionLabel(text = label)
+            Spacer(Modifier.height(10.dp))
+            AmountText(
+                amount = amount,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 22.sp,
+                    letterSpacing = (-0.8).sp,
+                ),
+                color = Kash.colors.text,
+                currencyColor = Kash.colors.fade,
+                currencyWeight = FontWeight.Normal,
+                currencyScale = 14f / 22f,
+            )
+        }
     }
 }
 
@@ -245,7 +252,6 @@ private fun ComparisonBanner(
     isSpendingDown: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val c = Kash.colors
     val message = when {
         percent == 0 -> stringResource(Res.string.stats_spent_same)
         isSpendingDown -> stringResource(Res.string.stats_spent_less, percent)
@@ -253,13 +259,13 @@ private fun ComparisonBanner(
     }
     val trendIcon: ImageVector = if (isSpendingDown) Icons.AutoMirrored.Filled.TrendingDown else Icons.AutoMirrored.Filled.TrendingUp
     val arrowIcon: ImageVector = if (isSpendingDown) Icons.Default.ArrowDownward else Icons.Default.ArrowUpward
-    val tileBg = if (c.isDark) Color(0x387FB089) else Color(0x141F3D2C)
+    val tileBg = if (Kash.colors.isDark) Color(0x387FB089) else Color(0x141F3D2C)
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(14.dp))
-            .background(c.accentSoft)
+            .background(Kash.colors.accentSoft)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -274,14 +280,14 @@ private fun ComparisonBanner(
             Icon(
                 imageVector = trendIcon,
                 contentDescription = null,
-                tint = c.accentSoftInk,
+                tint = Kash.colors.accentSoftInk,
                 modifier = Modifier.size(16.dp),
             )
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(Res.string.stats_vs_last_month),
-                color = c.text,
+                color = Kash.colors.text,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = (-0.2).sp,
@@ -289,7 +295,7 @@ private fun ComparisonBanner(
             Spacer(Modifier.height(1.dp))
             Text(
                 text = message,
-                color = c.sub,
+                color = Kash.colors.sub,
                 fontSize = 12.5.sp,
             )
         }
@@ -300,12 +306,12 @@ private fun ComparisonBanner(
             Icon(
                 imageVector = arrowIcon,
                 contentDescription = null,
-                tint = c.accentSoftInk,
+                tint = Kash.colors.accentSoftInk,
                 modifier = Modifier.size(13.dp),
             )
             Text(
                 text = "$percent%",
-                color = c.accentSoftInk,
+                color = Kash.colors.accentSoftInk,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = (-0.2).sp,
@@ -334,58 +340,54 @@ private fun MonthlyChartCard(
     bars: List<MonthlyBarUiModel>,
     modifier: Modifier = Modifier,
 ) {
-    val c = Kash.colors
-    val inactiveBar = if (c.isDark) Color(0x1AFFFFFF) else Color(0x140E1410)
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
-            .background(c.card)
-            .border(1.dp, c.line, RoundedCornerShape(18.dp))
-            .padding(start = 8.dp, end = 8.dp, top = 20.dp, bottom = 8.dp),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(130.dp)
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+    val inactiveBar = if (Kash.colors.isDark) Color(0x1AFFFFFF) else Color(0x140E1410)
+    KashCard(modifier = modifier, radius = 18.dp) {
+        Column(
+            modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 20.dp, bottom = 8.dp),
         ) {
-            bars.forEach { bar ->
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(),
-                    contentAlignment = Alignment.BottomCenter,
-                ) {
-                    val safeRatio = bar.ratio.coerceAtLeast(0.04f)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(130.dp)
+                    .padding(horizontal = 8.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                bars.forEach { bar ->
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(0.6f)
-                            .fillMaxHeight(safeRatio)
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(if (bar.isSelected) c.accent else inactiveBar),
-                    )
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.BottomCenter,
+                    ) {
+                        val safeRatio = bar.ratio.coerceAtLeast(0.04f)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(0.6f)
+                                .fillMaxHeight(safeRatio)
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(if (bar.isSelected) Kash.colors.accent else inactiveBar),
+                        )
+                    }
                 }
             }
-        }
-        Spacer(Modifier.height(10.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            bars.forEach { bar ->
-                Text(
-                    text = bar.label,
-                    modifier = Modifier.weight(1f),
-                    color = if (bar.isSelected) c.text else c.fade,
-                    fontSize = 11.sp,
-                    fontWeight = if (bar.isSelected) FontWeight.SemiBold else FontWeight.Medium,
-                    textAlign = TextAlign.Center,
-                )
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                bars.forEach { bar ->
+                    Text(
+                        text = bar.label,
+                        modifier = Modifier.weight(1f),
+                        color = if (bar.isSelected) Kash.colors.text else Kash.colors.fade,
+                        fontSize = 11.sp,
+                        fontWeight = if (bar.isSelected) FontWeight.SemiBold else FontWeight.Medium,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }
@@ -396,89 +398,84 @@ private fun TopCategoryRow(
     category: TopCategoryUiModel,
     modifier: Modifier = Modifier,
 ) {
-    val c = Kash.colors
     val swatch = categorySwatchFor(category.iconName)
-    val trackColor = if (c.isDark) Color(0x0FFFFFFF) else Color(0x0F0E1410)
+    val trackColor = if (Kash.colors.isDark) Color(0x0FFFFFFF) else Color(0x0F0E1410)
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(c.card)
-            .border(1.dp, c.line, RoundedCornerShape(14.dp))
-            .padding(start = 14.dp, end = 14.dp, top = 12.dp, bottom = 14.dp),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+    KashCard(modifier = modifier, radius = 14.dp) {
+        Column(
+            modifier = Modifier.padding(start = 14.dp, end = 14.dp, top = 12.dp, bottom = 14.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(RoundedCornerShape(9.dp))
-                    .background(swatch.bg),
-                contentAlignment = Alignment.Center,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Icon(
-                    imageVector = mapCategoryIcon(category.iconName),
-                    contentDescription = null,
-                    tint = swatch.fg,
-                    modifier = Modifier.size(16.dp),
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(9.dp))
+                        .background(swatch.bg),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = mapCategoryIcon(category.iconName),
+                        contentDescription = null,
+                        tint = swatch.fg,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+                Text(
+                    text = category.name,
+                    modifier = Modifier.weight(1f),
+                    color = Kash.colors.text,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                AmountText(
+                    amount = category.amount,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
+                        letterSpacing = (-0.2).sp,
+                    ),
+                    color = Kash.colors.text,
+                    currencyColor = Kash.colors.fade,
+                    currencyWeight = FontWeight.Normal,
+                    currencyScale = 12f / 14f,
                 )
             }
-            Text(
-                text = category.name,
-                modifier = Modifier.weight(1f),
-                color = c.text,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-            )
-            AmountText(
-                amount = category.amount,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    letterSpacing = (-0.2).sp,
-                ),
-                color = c.text,
-                currencyColor = c.fade,
-                currencyWeight = FontWeight.Normal,
-                currencyScale = 12f / 14f,
-            )
-        }
-        Spacer(Modifier.height(10.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(5.dp)
-                .clip(RoundedCornerShape(3.dp))
-                .background(trackColor),
-        ) {
+            Spacer(Modifier.height(10.dp))
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(category.ratio.coerceIn(0f, 1f))
-                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .height(5.dp)
                     .clip(RoundedCornerShape(3.dp))
-                    .background(c.accent),
-            )
+                    .background(trackColor),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(category.ratio.coerceIn(0f, 1f))
+                        .fillMaxHeight()
+                        .clip(RoundedCornerShape(3.dp))
+                        .background(Kash.colors.accent),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun EmptyStatsContent(
+private fun StatsEmptyContent(
     onAddTransaction: () -> Unit,
-    bottomPadding: androidx.compose.ui.unit.Dp,
+    bottomPadding: Dp,
 ) {
-    val c = Kash.colors
-    val ghostBar = if (c.isDark) Color(0x0DF1ECE0) else Color(0x0D1B1F1A)
+    val ghostBar = if (Kash.colors.isDark) Color(0x0DF1ECE0) else Color(0x0D1B1F1A)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = bottomPadding),
     ) {
-        StatsTopBarSection()
+        StatsTopBar()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -490,8 +487,7 @@ private fun EmptyStatsContent(
                 modifier = Modifier
                     .widthIn(max = 220.dp)
                     .fillMaxWidth()
-                    .height(110.dp)
-                    .padding(bottom = 0.dp),
+                    .height(110.dp),
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
@@ -502,14 +498,14 @@ private fun EmptyStatsContent(
                             .fillMaxHeight(ratio)
                             .clip(RoundedCornerShape(6.dp))
                             .background(ghostBar)
-                            .border(1.dp, c.lineStrong, RoundedCornerShape(6.dp)),
+                            .border(1.dp, Kash.colors.lineStrong, RoundedCornerShape(6.dp)),
                     )
                 }
             }
             Spacer(Modifier.height(18.dp))
             Text(
                 text = stringResource(Res.string.stats_empty_title),
-                color = c.text,
+                color = Kash.colors.text,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = (-0.5).sp,
@@ -518,38 +514,58 @@ private fun EmptyStatsContent(
             Spacer(Modifier.height(8.dp))
             Text(
                 text = stringResource(Res.string.stats_empty_subtitle),
-                color = c.sub,
+                color = Kash.colors.sub,
                 fontSize = 14.sp,
                 lineHeight = 21.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.widthIn(max = 280.dp),
             )
             Spacer(Modifier.height(22.dp))
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(c.accentSoft)
-                    .clickable(onClick = onAddTransaction)
-                    .padding(horizontal = 18.dp, vertical = 12.dp),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        tint = c.accentSoftInk,
-                        modifier = Modifier.size(16.dp),
-                    )
-                    Text(
-                        text = stringResource(Res.string.stats_empty_action),
-                        color = c.accentSoftInk,
-                        fontSize = 13.5.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-            }
+            KashButton(
+                text = stringResource(Res.string.stats_empty_action),
+                onClick = onAddTransaction,
+                leadingIcon = Icons.Default.Add,
+                modifier = Modifier.widthIn(max = 220.dp),
+            )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun StatsContentLoadingPreview() {
+    KashTheme { StatsContent(state = StatsUiState.Loading, onEvent = {}) }
+}
+
+@Preview
+@Composable
+private fun StatsContentEmptyPreview() {
+    KashTheme { StatsContent(state = StatsUiState.Empty, onEvent = {}) }
+}
+
+@Preview
+@Composable
+private fun StatsContentSuccessPreview() {
+    KashTheme {
+        StatsContent(
+            state = StatsUiState.Success(
+                selectedPeriod = Period.THIS_MONTH,
+                income = "320 000 ₸",
+                expenses = "184 200 ₸",
+                comparisonPercent = 12,
+                isSpendingDown = false,
+                monthlyChart = listOf(
+                    MonthlyBarUiModel("Jul", 0.6f, false),
+                    MonthlyBarUiModel("Aug", 0.4f, false),
+                    MonthlyBarUiModel("Sep", 0.7f, false),
+                    MonthlyBarUiModel("Oct", 0.9f, true),
+                ),
+                topCategories = listOf(
+                    TopCategoryUiModel(1, "Food", "restaurant", "62 400 ₸", 0.7f),
+                    TopCategoryUiModel(2, "Transport", "directions_car", "28 200 ₸", 0.4f),
+                ),
+            ),
+            onEvent = {},
+        )
     }
 }

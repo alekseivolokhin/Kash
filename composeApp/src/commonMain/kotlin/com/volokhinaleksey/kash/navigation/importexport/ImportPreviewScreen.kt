@@ -1,7 +1,6 @@
 package com.volokhinaleksey.kash.navigation.importexport
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,15 +29,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.volokhinaleksey.kash.components.BackTopBar
 import com.volokhinaleksey.kash.components.categorySwatchFor
 import com.volokhinaleksey.kash.components.mapCategoryIcon
+import com.volokhinaleksey.kash.designsystem.KashDimens
+import com.volokhinaleksey.kash.designsystem.button.KashButton
+import com.volokhinaleksey.kash.designsystem.button.KashButtonVariant
+import com.volokhinaleksey.kash.designsystem.card.KashCard
+import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
+import com.volokhinaleksey.kash.designsystem.topbar.KashBackTopBar
+import com.volokhinaleksey.kash.presentation.importexport.ImportDetectedSource
 import com.volokhinaleksey.kash.presentation.importexport.ImportPreviewEvent
 import com.volokhinaleksey.kash.presentation.importexport.ImportPreviewUiState
 import com.volokhinaleksey.kash.presentation.importexport.ImportRow
 import com.volokhinaleksey.kash.theme.Kash
+import com.volokhinaleksey.kash.theme.KashTheme
 import com.volokhinaleksey.kash.theme.NumericTextStyle
 import kash.composeapp.generated.resources.Res
+import kash.composeapp.generated.resources.cancel
 import kash.composeapp.generated.resources.import_action
 import kash.composeapp.generated.resources.import_pick_category
 import kash.composeapp.generated.resources.import_preview_top_bar_title
@@ -47,8 +53,8 @@ import kash.composeapp.generated.resources.import_stat_duplicates
 import kash.composeapp.generated.resources.import_stat_need_review
 import kash.composeapp.generated.resources.import_stat_new
 import kash.composeapp.generated.resources.import_transactions_count_format
-import kash.composeapp.generated.resources.cancel
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ImportPreviewScreen(
@@ -58,8 +64,8 @@ fun ImportPreviewScreen(
     val state by component.uiState.collectAsState()
     ImportPreviewContent(
         state = state,
-        onEvent = remember(component) { component::onEvent },
-        onBackClick = remember(component) { component::onBackClicked },
+        onEvent = component::onEvent,
+        onBackClick = component::onBackClicked,
         contentPadding = contentPadding,
     )
 }
@@ -69,7 +75,7 @@ private fun ImportPreviewContent(
     state: ImportPreviewUiState,
     onEvent: (ImportPreviewEvent) -> Unit,
     onBackClick: () -> Unit,
-    contentPadding: PaddingValues,
+    contentPadding: PaddingValues = PaddingValues(),
 ) {
     Box(
         modifier = Modifier
@@ -82,16 +88,15 @@ private fun ImportPreviewContent(
                 .verticalScroll(rememberScrollState())
                 .padding(top = contentPadding.calculateTopPadding()),
         ) {
-            BackTopBar(
+            KashBackTopBar(
                 title = stringResource(Res.string.import_preview_top_bar_title),
                 onBackClick = onBackClick,
-                showNotifications = false,
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = KashDimens.ScreenHorizontalPadding)
                     .padding(top = 12.dp, bottom = 110.dp + contentPadding.calculateBottomPadding()),
             ) {
                 DetectionBanner(state)
@@ -104,13 +109,7 @@ private fun ImportPreviewContent(
                 )
 
                 Spacer(Modifier.height(16.dp))
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Kash.colors.card)
-                        .border(1.dp, Kash.colors.line, RoundedCornerShape(16.dp)),
-                ) {
+                KashCard {
                     state.rows.forEachIndexed { index, row ->
                         PreviewRow(
                             row = row,
@@ -131,16 +130,17 @@ private fun ImportPreviewContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = KashDimens.ScreenHorizontalPadding)
                 .padding(bottom = 28.dp + contentPadding.calculateBottomPadding()),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            SecondaryButton(
+            KashButton(
                 text = stringResource(Res.string.cancel),
                 onClick = { onEvent(ImportPreviewEvent.CancelClicked) },
+                variant = KashButtonVariant.Secondary,
                 modifier = Modifier.weight(1f),
             )
-            ImportCtaButton(
+            KashButton(
                 text = stringResource(Res.string.import_action, state.newCount),
                 onClick = { onEvent(ImportPreviewEvent.ImportClicked) },
                 modifier = Modifier.weight(2f),
@@ -151,8 +151,7 @@ private fun ImportPreviewContent(
 
 @Composable
 private fun DetectionBanner(state: ImportPreviewUiState) {
-    val isDark = Kash.colors.isDark
-    val codeBg = if (isDark) Color(0x405A8C66) else Color(0x1A1F3D2C)
+    val codeBg = if (Kash.colors.isDark) Color(0x405A8C66) else Color(0x1A1F3D2C)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -227,28 +226,20 @@ private fun StatsRow(new: Int, duplicates: Int, needReview: Int) {
 
 @Composable
 private fun StatCard(label: String, value: String, warn: Boolean, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(Kash.colors.card)
-            .border(1.dp, Kash.colors.line, RoundedCornerShape(12.dp))
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-    ) {
-        Text(
-            text = label.uppercase(),
-            color = Kash.colors.sub,
-            fontSize = 10.5.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 1.sp,
-        )
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = value,
-            color = if (warn) Kash.colors.neg else Kash.colors.text,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = (-0.4).sp,
-        )
+    KashCard(modifier = modifier, radius = 12.dp) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+        ) {
+            KashSectionLabel(text = label)
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = value,
+                color = if (warn) Kash.colors.neg else Kash.colors.text,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = (-0.4).sp,
+            )
+        }
     }
 }
 
@@ -328,44 +319,6 @@ private fun PreviewRow(row: ImportRow, onClick: () -> Unit) {
     }
 }
 
-@Composable
-private fun SecondaryButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(14.dp))
-            .border(1.dp, Kash.colors.lineStrong, RoundedCornerShape(14.dp))
-            .clickable(onClick = onClick)
-            .padding(vertical = 14.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = text,
-            color = Kash.colors.text,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
-    }
-}
-
-@Composable
-private fun ImportCtaButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(14.dp))
-            .background(Kash.colors.accent)
-            .clickable(onClick = onClick)
-            .padding(vertical = 14.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = text,
-            color = Kash.colors.accentInk,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
-    }
-}
-
 private fun formatAmountCents(amountCents: Long): String {
     val abs = kotlin.math.abs(amountCents)
     val whole = abs / 100
@@ -377,4 +330,33 @@ private fun formatAmountCents(amountCents: Long): String {
         sb.append(s[i])
     }
     return sb.toString()
+}
+
+@Preview
+@Composable
+private fun ImportPreviewContentPreview() {
+    KashTheme {
+        ImportPreviewContent(
+            state = ImportPreviewUiState(
+                source = ImportDetectedSource(
+                    bankCode = "TIN",
+                    bankName = "Tinkoff",
+                    fileName = "operations.csv",
+                    transactionCount = 26,
+                    rangeLabel = "Oct 1 – Oct 12",
+                ),
+                newCount = 23,
+                duplicateCount = 3,
+                needReviewCount = 1,
+                rows = listOf(
+                    ImportRow(1, "Oct 12", "Apple Store", "Electronics", "computer", -59_900, false),
+                    ImportRow(2, "Oct 12", "NoMad Kitchen", "Food", "restaurant", -12_400, false),
+                    ImportRow(3, "Oct 11", "Yandex Taxi", "Transport", "directions_car", -8_200, false),
+                    ImportRow(4, "Oct 11", "IT Solutions LLC", "Income", "work", 145_000, false),
+                ),
+            ),
+            onEvent = {},
+            onBackClick = {},
+        )
+    }
 }

@@ -1,17 +1,12 @@
 package com.volokhinaleksey.kash.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -30,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.designsystem.button.KashButton
+import com.volokhinaleksey.kash.designsystem.button.KashButtonVariant
 import com.volokhinaleksey.kash.theme.Kash
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.empty_home_action_add
@@ -95,81 +92,17 @@ fun EmptyHomeContent(
             modifier = Modifier.widthIn(max = 280.dp).fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            EmptyHomePrimaryAction(
+            KashButton(
                 text = stringResource(Res.string.empty_home_action_add),
                 onClick = onAddTransactionClick,
+                leadingIcon = Icons.Default.Add,
             )
-            EmptyHomeOutlinedAction(
+            KashButton(
                 text = stringResource(Res.string.empty_home_action_import),
                 onClick = onImportStatementClick,
+                variant = KashButtonVariant.Secondary,
+                leadingIcon = Icons.Outlined.FileUpload,
             )
         }
-    }
-}
-
-@Composable
-private fun EmptyHomePrimaryAction(
-    text: String,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .clip(RoundedCornerShape(13.dp))
-            .background(Kash.colors.accent)
-            .clickable(onClick = onClick)
-            .padding(vertical = 13.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = null,
-            tint = Kash.colors.accentInk,
-            modifier = Modifier.size(16.dp),
-        )
-        Spacer(Modifier.size(8.dp))
-        Text(
-            text = text,
-            color = Kash.colors.accentInk,
-            fontSize = 14.5.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
-    }
-}
-
-@Composable
-private fun EmptyHomeOutlinedAction(
-    text: String,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .clip(RoundedCornerShape(13.dp))
-            .border(
-                border = BorderStroke(1.dp, Kash.colors.lineStrong),
-                shape = RoundedCornerShape(13.dp),
-            )
-            .clickable(onClick = onClick)
-            .padding(vertical = 13.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.FileUpload,
-            contentDescription = null,
-            tint = Kash.colors.text,
-            modifier = Modifier.size(16.dp),
-        )
-        Spacer(Modifier.size(8.dp))
-        Text(
-            text = text,
-            color = Kash.colors.text,
-            fontSize = 14.5.sp,
-            fontWeight = FontWeight.SemiBold,
-        )
     }
 }

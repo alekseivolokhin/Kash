@@ -1,4 +1,4 @@
-package com.volokhinaleksey.kash.components
+package com.volokhinaleksey.kash.designsystem.field
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,10 +25,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.designsystem.KashDimens
 import com.volokhinaleksey.kash.theme.Kash
 
 @Composable
-fun TransactionsSearchField(
+fun KashSearchField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
@@ -40,13 +40,14 @@ fun TransactionsSearchField(
         fontSize = 14.sp,
         lineHeight = 20.sp,
     )
+    val shape = RoundedCornerShape(KashDimens.SmallCardRadius)
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
+            .clip(shape)
             .background(Kash.colors.card)
-            .border(1.dp, Kash.colors.line, RoundedCornerShape(14.dp))
+            .border(1.dp, Kash.colors.line, shape)
             .padding(horizontal = 14.dp, vertical = 11.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -69,9 +70,7 @@ fun TransactionsSearchField(
             ),
             modifier = Modifier.fillMaxWidth(),
             decorationBox = { innerTextField ->
-                Box(
-                    contentAlignment = Alignment.CenterStart,
-                ) {
+                Box(contentAlignment = Alignment.CenterStart) {
                     if (value.isEmpty()) {
                         Text(
                             text = placeholder,

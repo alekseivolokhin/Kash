@@ -1,10 +1,6 @@
 package com.volokhinaleksey.kash.navigation.importexport
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,12 +11,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -32,21 +25,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.volokhinaleksey.kash.components.BackTopBar
+import com.volokhinaleksey.kash.designsystem.KashDimens
+import com.volokhinaleksey.kash.designsystem.button.KashButton
+import com.volokhinaleksey.kash.designsystem.card.KashCard
+import com.volokhinaleksey.kash.designsystem.feedback.KashScreenSubtitle
+import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
+import com.volokhinaleksey.kash.designsystem.field.KashRadio
+import com.volokhinaleksey.kash.designsystem.field.KashSwitch
+import com.volokhinaleksey.kash.designsystem.topbar.KashBackTopBar
 import com.volokhinaleksey.kash.presentation.importexport.ExportEvent
+import com.volokhinaleksey.kash.presentation.importexport.ExportOptions
 import com.volokhinaleksey.kash.presentation.importexport.ExportPeriod
 import com.volokhinaleksey.kash.presentation.importexport.ExportPeriodOption
 import com.volokhinaleksey.kash.presentation.importexport.ExportUiState
 import com.volokhinaleksey.kash.theme.JetBrainsMonoFontFamily
 import com.volokhinaleksey.kash.theme.Kash
+import com.volokhinaleksey.kash.theme.KashTheme
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.export_action
 import kash.composeapp.generated.resources.export_format_suffix
@@ -68,6 +68,7 @@ import kash.composeapp.generated.resources.export_screen_title
 import kash.composeapp.generated.resources.export_top_bar_title
 import kash.composeapp.generated.resources.export_tx_count_format
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ExportScreen(
@@ -77,8 +78,8 @@ fun ExportScreen(
     val state by component.uiState.collectAsState()
     ExportContent(
         state = state,
-        onEvent = remember(component) { component::onEvent },
-        onBackClick = remember(component) { component::onBackClicked },
+        onEvent = component::onEvent,
+        onBackClick = component::onBackClicked,
         contentPadding = contentPadding,
     )
 }
@@ -88,7 +89,7 @@ private fun ExportContent(
     state: ExportUiState,
     onEvent: (ExportEvent) -> Unit,
     onBackClick: () -> Unit,
-    contentPadding: PaddingValues,
+    contentPadding: PaddingValues = PaddingValues(),
 ) {
     Box(
         modifier = Modifier
@@ -101,16 +102,15 @@ private fun ExportContent(
                 .verticalScroll(rememberScrollState())
                 .padding(top = contentPadding.calculateTopPadding()),
         ) {
-            BackTopBar(
+            KashBackTopBar(
                 title = stringResource(Res.string.export_top_bar_title),
                 onBackClick = onBackClick,
-                showNotifications = false,
             )
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = KashDimens.ScreenHorizontalPadding)
                     .padding(top = 12.dp, bottom = 110.dp + contentPadding.calculateBottomPadding()),
             ) {
                 Text(
@@ -122,15 +122,10 @@ private fun ExportContent(
                     letterSpacing = (-1).sp,
                 )
                 Spacer(Modifier.height(8.dp))
-                Text(
-                    text = stringResource(Res.string.export_screen_subtitle),
-                    color = Kash.colors.sub,
-                    fontSize = 14.sp,
-                    lineHeight = 21.sp,
-                )
+                KashScreenSubtitle(text = stringResource(Res.string.export_screen_subtitle))
 
                 Spacer(Modifier.height(22.dp))
-                SectionLabel(text = stringResource(Res.string.export_period_label))
+                KashSectionLabel(text = stringResource(Res.string.export_period_label))
                 Spacer(Modifier.height(10.dp))
                 PeriodList(
                     options = state.periods,
@@ -139,7 +134,7 @@ private fun ExportContent(
                 )
 
                 Spacer(Modifier.height(22.dp))
-                SectionLabel(text = stringResource(Res.string.export_options_label))
+                KashSectionLabel(text = stringResource(Res.string.export_options_label))
                 Spacer(Modifier.height(10.dp))
                 OptionsList(
                     state = state,
@@ -155,26 +150,16 @@ private fun ExportContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = KashDimens.ScreenHorizontalPadding)
                 .padding(bottom = 28.dp + contentPadding.calculateBottomPadding()),
         ) {
-            DownloadCta(
-                count = state.selectedTransactionCount,
+            KashButton(
+                text = stringResource(Res.string.export_action, state.selectedTransactionCount),
                 onClick = { onEvent(ExportEvent.ExportClicked) },
+                leadingIcon = Icons.Outlined.FileDownload,
             )
         }
     }
-}
-
-@Composable
-private fun SectionLabel(text: String) {
-    Text(
-        text = text.uppercase(),
-        color = Kash.colors.sub,
-        fontSize = 11.sp,
-        fontWeight = FontWeight.SemiBold,
-        letterSpacing = 1.4.sp,
-    )
 }
 
 @Composable
@@ -183,13 +168,7 @@ private fun PeriodList(
     selected: ExportPeriod,
     onSelect: (ExportPeriod) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(Kash.colors.card)
-            .border(1.dp, Kash.colors.line, RoundedCornerShape(16.dp)),
-    ) {
+    KashCard {
         options.forEachIndexed { index, option ->
             PeriodRow(
                 option = option,
@@ -209,11 +188,11 @@ private fun PeriodRow(option: ExportPeriodOption, selected: Boolean, onSelect: (
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onSelect)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = KashDimens.RowHorizontalPadding, vertical = KashDimens.RowVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Radio(selected = selected)
+        KashRadio(selected = selected)
         Text(
             text = stringResource(option.period.labelRes()),
             color = Kash.colors.text,
@@ -240,36 +219,8 @@ private fun PeriodRow(option: ExportPeriodOption, selected: Boolean, onSelect: (
 }
 
 @Composable
-private fun Radio(selected: Boolean) {
-    val borderColor = if (selected) Kash.colors.accent else Kash.colors.lineStrong
-    Box(
-        modifier = Modifier
-            .size(18.dp)
-            .clip(CircleShape)
-            .background(if (selected) Kash.colors.accent else Color.Transparent)
-            .border(1.5.dp, borderColor, CircleShape),
-        contentAlignment = Alignment.Center,
-    ) {
-        if (selected) {
-            Box(
-                modifier = Modifier
-                    .size(7.dp)
-                    .clip(CircleShape)
-                    .background(Kash.colors.accentInk),
-            )
-        }
-    }
-}
-
-@Composable
 private fun OptionsList(state: ExportUiState, onEvent: (ExportEvent) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(Kash.colors.card)
-            .border(1.dp, Kash.colors.line, RoundedCornerShape(16.dp)),
-    ) {
+    KashCard {
         OptionRow(
             label = stringResource(Res.string.export_option_include_category),
             sub = stringResource(Res.string.export_option_include_category_sub),
@@ -299,7 +250,7 @@ private fun OptionRow(label: String, sub: String, checked: Boolean, onToggle: ()
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onToggle)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = KashDimens.RowHorizontalPadding, vertical = KashDimens.RowVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
@@ -317,44 +268,7 @@ private fun OptionRow(label: String, sub: String, checked: Boolean, onToggle: ()
                 fontSize = 12.sp,
             )
         }
-        ToggleSwitch(checked = checked)
-    }
-}
-
-@Composable
-private fun ToggleSwitch(checked: Boolean) {
-    val isDark = Kash.colors.isDark
-    val offTrack = if (isDark) Kash.colors.cardAlt else Kash.colors.chipBg
-    val trackColor by animateColorAsState(
-        targetValue = if (checked) Kash.colors.accent else offTrack,
-        animationSpec = tween(durationMillis = 150),
-        label = "toggleTrack",
-    )
-    val thumbX by animateDpAsState(
-        targetValue = if (checked) 18.dp else 2.dp,
-        animationSpec = tween(durationMillis = 150),
-        label = "toggleThumbX",
-    )
-    val thumbColor = if (checked) Kash.colors.accentInk else Color.White
-
-    Box(
-        modifier = Modifier
-            .width(38.dp)
-            .height(22.dp)
-            .clip(RoundedCornerShape(999.dp))
-            .background(trackColor)
-            .let { base ->
-                if (!checked) base.border(1.dp, Kash.colors.line, RoundedCornerShape(999.dp))
-                else base
-            },
-    ) {
-        Box(
-            modifier = Modifier
-                .offset(x = thumbX, y = 2.dp)
-                .size(18.dp)
-                .clip(CircleShape)
-                .background(thumbColor),
-        )
+        KashSwitch(checked = checked, onCheckedChange = { onToggle() })
     }
 }
 
@@ -378,35 +292,6 @@ private fun FormatBanner(fileName: String) {
     }
 }
 
-@Composable
-private fun DownloadCta(count: Int, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(Kash.colors.accent)
-            .clickable(onClick = onClick)
-            .padding(vertical = 15.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.FileDownload,
-            contentDescription = null,
-            tint = Kash.colors.accentInk,
-            modifier = Modifier.size(17.dp),
-        )
-        Spacer(Modifier.width(8.dp))
-        Text(
-            text = stringResource(Res.string.export_action, count),
-            color = Kash.colors.accentInk,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = (-0.2).sp,
-        )
-    }
-}
-
 private fun ExportPeriod.labelRes() = when (this) {
     ExportPeriod.THIS_MONTH -> Res.string.export_period_this_month
     ExportPeriod.LAST_3_MONTHS -> Res.string.export_period_last_3_months
@@ -424,4 +309,27 @@ private fun formatTxCount(count: Int): String {
         sb.append(s[i])
     }
     return sb.toString()
+}
+
+@Preview
+@Composable
+private fun ExportContentPreview() {
+    KashTheme {
+        ExportContent(
+            state = ExportUiState(
+                periods = listOf(
+                    ExportPeriodOption(ExportPeriod.THIS_MONTH, 142),
+                    ExportPeriodOption(ExportPeriod.LAST_3_MONTHS, 418),
+                    ExportPeriodOption(ExportPeriod.THIS_YEAR, 1240),
+                    ExportPeriodOption(ExportPeriod.ALL_TIME, 3502),
+                    ExportPeriodOption(ExportPeriod.CUSTOM, null),
+                ),
+                selectedPeriod = ExportPeriod.THIS_MONTH,
+                options = ExportOptions(),
+                fileName = "kash-export-2026-04.csv",
+            ),
+            onEvent = {},
+            onBackClick = {},
+        )
+    }
 }

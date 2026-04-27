@@ -39,6 +39,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
             implementation(libs.decompose)
             implementation(libs.decompose.extensions.compose)
@@ -54,6 +55,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(compose.uiTooling)
         }
     }
 }

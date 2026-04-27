@@ -15,31 +15,32 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.volokhinaleksey.kash.components.AddTransactionTopBar
 import com.volokhinaleksey.kash.components.AmountInputSection
 import com.volokhinaleksey.kash.components.CategoryItem
 import com.volokhinaleksey.kash.components.CategoryPickerGrid
 import com.volokhinaleksey.kash.components.InputRowCard
 import com.volokhinaleksey.kash.components.KashDatePickerDialog
-import com.volokhinaleksey.kash.components.KashPrimaryButton
 import com.volokhinaleksey.kash.components.NoteRowCard
-import com.volokhinaleksey.kash.components.TransactionTypeSwitcher
+import com.volokhinaleksey.kash.designsystem.button.KashButton
+import com.volokhinaleksey.kash.designsystem.chip.KashSegmentItem
+import com.volokhinaleksey.kash.designsystem.chip.KashSegmentedControl
+import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
+import com.volokhinaleksey.kash.designsystem.topbar.KashBackTopBar
+import com.volokhinaleksey.kash.domain.model.TransactionType
 import com.volokhinaleksey.kash.presentation.transactions.AddTransactionEvent
 import com.volokhinaleksey.kash.presentation.transactions.AddTransactionUiState
+import com.volokhinaleksey.kash.presentation.transactions.CategoryUiModel
 import com.volokhinaleksey.kash.presentation.util.formatDateLong
 import com.volokhinaleksey.kash.theme.Kash
+import com.volokhinaleksey.kash.theme.KashTheme
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.add_transaction
 import kash.composeapp.generated.resources.amount_label
@@ -50,6 +51,7 @@ import kash.composeapp.generated.resources.note_placeholder
 import kash.composeapp.generated.resources.save_transaction
 import kash.composeapp.generated.resources.today_prefix
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun AddTransactionScreen(
@@ -68,7 +70,7 @@ fun AddTransactionScreen(
                 component.onEvent(event)
             }
         },
-        onBackClick = remember(component) { component::onBackClicked },
+        onBackClick = component::onBackClicked,
         contentPadding = contentPadding,
     )
 
@@ -89,7 +91,7 @@ private fun AddTransactionContent(
     state: AddTransactionUiState,
     onEvent: (AddTransactionEvent) -> Unit,
     onBackClick: () -> Unit,
-    contentPadding: PaddingValues,
+    contentPadding: PaddingValues = PaddingValues(),
 ) {
     Box(
         modifier = Modifier
@@ -102,17 +104,19 @@ private fun AddTransactionContent(
                 .verticalScroll(rememberScrollState())
                 .padding(top = contentPadding.calculateTopPadding()),
         ) {
-            AddTransactionTopBar(
+            KashBackTopBar(
                 title = stringResource(Res.string.add_transaction),
                 onBackClick = onBackClick,
             )
 
             Spacer(Modifier.height(8.dp))
 
-            TransactionTypeSwitcher(
+            KashSegmentedControl(
+                items = listOf(
+                    KashSegmentItem(TransactionType.EXPENSE, stringResource(Res.string.expense)),
+                    KashSegmentItem(TransactionType.INCOME, stringResource(Res.string.income)),
+                ),
                 selected = state.type,
-                expenseLabel = stringResource(Res.string.expense),
-                incomeLabel = stringResource(Res.string.income),
                 onSelected = { onEvent(AddTransactionEvent.TypeChanged(it)) },
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
@@ -134,11 +138,7 @@ private fun AddTransactionContent(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                Text(
-                    text = stringResource(Res.string.category_label),
-                    style = MaterialTheme.typography.labelMedium.copy(letterSpacing = 1.5.sp),
-                    color = Kash.colors.sub,
-                )
+                KashSectionLabel(text = stringResource(Res.string.category_label))
 
                 CategoryPickerGrid(
                     categories = state.categories.map {
@@ -172,7 +172,7 @@ private fun AddTransactionContent(
 
             Spacer(Modifier.height(24.dp))
 
-            KashPrimaryButton(
+            KashButton(
                 text = stringResource(Res.string.save_transaction),
                 onClick = { onEvent(AddTransactionEvent.SaveClicked) },
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -180,5 +180,27 @@ private fun AddTransactionContent(
 
             Spacer(Modifier.height(16.dp + contentPadding.calculateBottomPadding()))
         }
+    }
+}
+
+@Preview
+@Composable
+private fun AddTransactionContentPreview() {
+    KashTheme {
+        AddTransactionContent(
+            state = AddTransactionUiState(
+                type = TransactionType.EXPENSE,
+                amount = "5000",
+                categories = listOf(
+                    CategoryUiModel(1, "Food", "restaurant"),
+                    CategoryUiModel(2, "Transport", "directions_car"),
+                ),
+                selectedCategoryId = 1,
+                date = 0L,
+                note = "Lunch",
+            ),
+            onEvent = {},
+            onBackClick = {},
+        )
     }
 }

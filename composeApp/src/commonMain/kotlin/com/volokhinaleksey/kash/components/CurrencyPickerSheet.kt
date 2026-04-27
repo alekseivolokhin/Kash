@@ -43,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.designsystem.field.KashSearchField
 import com.volokhinaleksey.kash.theme.Kash
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.currency_name_aed
@@ -184,7 +185,7 @@ private fun SearchBar(value: String, onValueChange: (String) -> Unit) {
             .padding(horizontal = 20.dp)
             .padding(top = 4.dp, bottom = 14.dp),
     ) {
-        TransactionsSearchField(
+        KashSearchField(
             value = value,
             onValueChange = onValueChange,
             placeholder = stringResource(Res.string.currency_picker_search_hint),

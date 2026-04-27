@@ -1,7 +1,6 @@
 package com.volokhinaleksey.kash.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.designsystem.card.KashCard
+import com.volokhinaleksey.kash.designsystem.feedback.KashSectionLabel
 import com.volokhinaleksey.kash.presentation.transactions.TransactionGroupLabel
 import com.volokhinaleksey.kash.presentation.transactions.TransactionRowUiModel
 import com.volokhinaleksey.kash.theme.Kash
@@ -37,25 +38,12 @@ fun TransactionGroupCard(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(
+        KashSectionLabel(
             text = label.asText(),
-            color = Kash.colors.sub,
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontSize = 11.sp,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.4.sp,
-            ),
             modifier = Modifier.padding(bottom = 6.dp),
         )
 
-        val cardShape = RoundedCornerShape(16.dp)
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(cardShape)
-                .background(Kash.colors.card)
-                .border(1.dp, Kash.colors.line, cardShape),
-        ) {
+        KashCard {
             items.forEachIndexed { index, item ->
                 TransactionGroupRow(item = item)
                 if (index < items.size - 1) {
@@ -139,4 +127,4 @@ private fun TransactionGroupLabel.asText(): String = when (this) {
     TransactionGroupLabel.Today -> stringResource(Res.string.transactions_group_today)
     TransactionGroupLabel.Yesterday -> stringResource(Res.string.transactions_group_yesterday)
     is TransactionGroupLabel.Date -> text
-}.uppercase()
+}

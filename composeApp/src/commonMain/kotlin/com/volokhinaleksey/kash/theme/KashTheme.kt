@@ -67,6 +67,8 @@ fun KashTheme(
     val palette = if (darkTheme) KashDarkColors else KashLightColors
     val colorScheme = if (darkTheme) darkSchemeFor(palette) else lightSchemeFor(palette)
 
+    ApplySystemBarsStyle(darkTheme = darkTheme)
+
     CompositionLocalProvider(LocalKashColors provides palette) {
         MaterialTheme(
             colorScheme = colorScheme,

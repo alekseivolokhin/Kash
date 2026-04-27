@@ -18,6 +18,7 @@ import com.volokhinaleksey.kash.navigation.settings.SettingsScreen
 import com.volokhinaleksey.kash.navigation.stats.StatsScreen
 import com.volokhinaleksey.kash.navigation.transactions.AddTransactionScreen
 import com.volokhinaleksey.kash.navigation.transactions.TransactionsScreen
+import com.volokhinaleksey.kash.theme.Kash
 
 @Composable
 fun RootContent(component: RootComponent) {
@@ -31,6 +32,7 @@ fun RootContent(component: RootComponent) {
         activeChild !is RootChild.Onboarding
 
     Scaffold(
+        containerColor = Kash.colors.bg,
         bottomBar = {
             if (showBottomBar) {
                 KashBottomBar(

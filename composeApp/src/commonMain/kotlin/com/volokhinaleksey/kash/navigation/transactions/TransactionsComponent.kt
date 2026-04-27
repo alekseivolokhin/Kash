@@ -110,6 +110,8 @@ class TransactionsComponent(
         TransactionsFilter.All -> true
         TransactionsFilter.Income -> transaction.type == TransactionType.INCOME
         TransactionsFilter.Expense -> transaction.type == TransactionType.EXPENSE
+        TransactionsFilter.Transfer -> false
+        TransactionsFilter.Account -> true
         is TransactionsFilter.Category -> category.name.equals(filter.name, ignoreCase = true)
     }
 

@@ -10,6 +10,11 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
+import com.volokhinaleksey.kash.navigation.accounts.AccountDetailComponent
+import com.volokhinaleksey.kash.navigation.accounts.AccountsComponent
+import com.volokhinaleksey.kash.navigation.accounts.AddAccountComponent
+import com.volokhinaleksey.kash.navigation.accounts.ExchangeRatesComponent
+import com.volokhinaleksey.kash.navigation.accounts.InstitutionPickerComponent
 import com.volokhinaleksey.kash.navigation.home.HomeComponent
 import com.volokhinaleksey.kash.navigation.importexport.ExportComponent
 import com.volokhinaleksey.kash.navigation.importexport.ImportErrorComponent
@@ -21,6 +26,7 @@ import com.volokhinaleksey.kash.navigation.settings.SettingsComponent
 import com.volokhinaleksey.kash.navigation.stats.StatsComponent
 import com.volokhinaleksey.kash.navigation.transactions.AddTransactionComponent
 import com.volokhinaleksey.kash.navigation.transactions.TransactionsComponent
+import com.volokhinaleksey.kash.navigation.transfer.TransferComponent
 import com.volokhinaleksey.kash.presentation.settings.ThemeMode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -61,6 +67,8 @@ class RootComponent(
                 onNavigateToAddTransaction = { navigation.push(RootConfig.AddTransaction) },
                 onNavigateToTransactions = { navigation.bringToFront(RootConfig.Transactions) },
                 onNavigateToImport = { navigation.push(RootConfig.ImportPick) },
+                onNavigateToAccounts = { navigation.push(RootConfig.Accounts) },
+                onNavigateToAccountDetail = { id -> navigation.push(RootConfig.AccountDetail(id)) },
             )
         )
 
@@ -83,6 +91,51 @@ class RootComponent(
                 onThemeModeChange = { _themeMode.value = it },
                 onImportClicked = { navigation.push(RootConfig.ImportPick) },
                 onExportClicked = { navigation.push(RootConfig.Export) },
+                onAccountsClicked = { navigation.push(RootConfig.Accounts) },
+                onExchangeRatesClicked = { navigation.push(RootConfig.ExchangeRates) },
+            )
+        )
+        is RootConfig.Accounts -> RootChild.Accounts(
+            AccountsComponent(
+                componentContext = componentContext,
+                onBack = { navigation.pop() },
+                onAddAccount = { navigation.push(RootConfig.AddAccount) },
+                onAccountSelected = { id -> navigation.push(RootConfig.AccountDetail(id)) },
+                onImportStatement = { navigation.push(RootConfig.ImportPick) },
+            )
+        )
+        is RootConfig.AccountDetail -> RootChild.AccountDetail(
+            AccountDetailComponent(
+                componentContext = componentContext,
+                accountId = config.accountId,
+                onBack = { navigation.pop() },
+                onMakeTransfer = { navigation.push(RootConfig.Transfer) },
+            )
+        )
+        is RootConfig.AddAccount -> RootChild.AddAccount(
+            AddAccountComponent(
+                componentContext = componentContext,
+                onBack = { navigation.pop() },
+                onPickInstitution = { navigation.push(RootConfig.InstitutionPicker) },
+                onPickCurrency = { },
+            )
+        )
+        is RootConfig.InstitutionPicker -> RootChild.InstitutionPicker(
+            InstitutionPickerComponent(
+                componentContext = componentContext,
+                onBack = { navigation.pop() },
+            )
+        )
+        is RootConfig.ExchangeRates -> RootChild.ExchangeRates(
+            ExchangeRatesComponent(
+                componentContext = componentContext,
+                onBack = { navigation.pop() },
+            )
+        )
+        is RootConfig.Transfer -> RootChild.Transfer(
+            TransferComponent(
+                componentContext = componentContext,
+                onBack = { navigation.pop() },
             )
         )
         is RootConfig.AddTransaction -> RootChild.AddTransaction(
@@ -189,6 +242,24 @@ sealed interface RootConfig {
         val pages: Int,
         val sizeLabel: String,
     ) : RootConfig
+
+    @Serializable
+    data object Accounts : RootConfig
+
+    @Serializable
+    data class AccountDetail(val accountId: String) : RootConfig
+
+    @Serializable
+    data object AddAccount : RootConfig
+
+    @Serializable
+    data object InstitutionPicker : RootConfig
+
+    @Serializable
+    data object ExchangeRates : RootConfig
+
+    @Serializable
+    data object Transfer : RootConfig
 }
 
 sealed class RootChild {
@@ -202,4 +273,10 @@ sealed class RootChild {
     data class ImportPreview(val component: ImportPreviewComponent) : RootChild()
     data class Export(val component: ExportComponent) : RootChild()
     data class ImportError(val component: ImportErrorComponent) : RootChild()
+    data class Accounts(val component: AccountsComponent) : RootChild()
+    data class AccountDetail(val component: AccountDetailComponent) : RootChild()
+    data class AddAccount(val component: AddAccountComponent) : RootChild()
+    data class InstitutionPicker(val component: InstitutionPickerComponent) : RootChild()
+    data class ExchangeRates(val component: ExchangeRatesComponent) : RootChild()
+    data class Transfer(val component: TransferComponent) : RootChild()
 }

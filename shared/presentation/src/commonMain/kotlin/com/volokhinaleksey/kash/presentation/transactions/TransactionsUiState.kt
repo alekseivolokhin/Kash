@@ -25,6 +25,8 @@ sealed interface TransactionsFilter {
     data object All : TransactionsFilter
     data object Income : TransactionsFilter
     data object Expense : TransactionsFilter
+    data object Transfer : TransactionsFilter
+    data object Account : TransactionsFilter
     data class Category(val name: String) : TransactionsFilter
 }
 
@@ -48,4 +50,8 @@ data class TransactionRowUiModel(
     val amount: String,
     val isIncome: Boolean,
     val iconName: String,
+    val bankId: String? = null,
+    val isTransfer: Boolean = false,
+    val transferToBankId: String? = null,
+    val transferConvertedAmount: String? = null,
 )

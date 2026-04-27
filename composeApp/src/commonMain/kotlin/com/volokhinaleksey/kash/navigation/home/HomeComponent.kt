@@ -7,6 +7,8 @@ import com.volokhinaleksey.kash.domain.model.TransactionType
 import com.volokhinaleksey.kash.domain.repository.TransactionRepository
 import com.volokhinaleksey.kash.domain.usecase.GetBalanceSummaryUseCase
 import com.volokhinaleksey.kash.domain.usecase.GetRecentTransactionsUseCase
+import com.volokhinaleksey.kash.presentation.home.HomeAccountChip
+import com.volokhinaleksey.kash.presentation.home.HomeCurrencyChip
 import com.volokhinaleksey.kash.presentation.home.HomeEvent
 import com.volokhinaleksey.kash.presentation.home.HomeUiState
 import com.volokhinaleksey.kash.presentation.home.TransactionUiModel
@@ -33,6 +35,8 @@ class HomeComponent(
     private val onNavigateToAddTransaction: () -> Unit,
     private val onNavigateToTransactions: () -> Unit,
     private val onNavigateToImport: () -> Unit,
+    private val onNavigateToAccounts: () -> Unit = {},
+    private val onNavigateToAccountDetail: (String) -> Unit = {},
 ) : ComponentContext by componentContext, KoinComponent {
 
     private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
@@ -82,6 +86,8 @@ class HomeComponent(
                     expenses = formatTenge(summary.expenses),
                     selectedPeriod = period,
                     recentTransactions = transactionModels,
+                    currencyChips = MOCK_CURRENCY_CHIPS,
+                    accountsStrip = MOCK_ACCOUNTS_STRIP,
                 )
             }
         }.onEach { _uiState.value = it }
@@ -95,7 +101,50 @@ class HomeComponent(
             is HomeEvent.AddTransactionClicked -> onNavigateToAddTransaction()
             is HomeEvent.ViewAllTransactionsClicked -> onNavigateToTransactions()
             is HomeEvent.ImportStatementClicked -> onNavigateToImport()
+            is HomeEvent.AccountSelected -> onNavigateToAccountDetail(event.accountId)
+            HomeEvent.AllAccountsClicked -> onNavigateToAccounts()
         }
     }
 
 }
+
+private val MOCK_CURRENCY_CHIPS = listOf(
+    HomeCurrencyChip("USD", "850"),
+    HomeCurrencyChip("EUR", "120"),
+)
+
+private val MOCK_ACCOUNTS_STRIP = listOf(
+    HomeAccountChip(
+        id = "kaspi-gold",
+        name = "Kaspi Gold",
+        typeShort = "DEBIT",
+        balance = "425 000",
+        currencySymbol = "₸",
+        bankId = "kaspi",
+        selected = true,
+    ),
+    HomeAccountChip(
+        id = "kaspi-red",
+        name = "Kaspi Red",
+        typeShort = "CREDIT",
+        balance = "−42 000",
+        currencySymbol = "₸",
+        bankId = "kaspi",
+    ),
+    HomeAccountChip(
+        id = "halyk-onay",
+        name = "Halyk Onay",
+        typeShort = "DEBIT",
+        balance = "850",
+        currencySymbol = "$",
+        bankId = "halyk",
+    ),
+    HomeAccountChip(
+        id = "wallet",
+        name = "Wallet",
+        typeShort = "CASH",
+        balance = "25 000",
+        currencySymbol = "₸",
+        bankId = "cash",
+    ),
+)

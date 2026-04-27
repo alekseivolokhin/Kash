@@ -45,9 +45,11 @@ import com.volokhinaleksey.kash.theme.KashTheme
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.add_transaction
 import kash.composeapp.generated.resources.transactions_empty
+import kash.composeapp.generated.resources.transactions_filter_account
 import kash.composeapp.generated.resources.transactions_filter_all
 import kash.composeapp.generated.resources.transactions_filter_expense
 import kash.composeapp.generated.resources.transactions_filter_income
+import kash.composeapp.generated.resources.transactions_filter_transfer
 import kash.composeapp.generated.resources.transactions_search_hint
 import kash.composeapp.generated.resources.transactions_title
 import org.jetbrains.compose.resources.stringResource
@@ -181,6 +183,17 @@ private fun TransactionsFiltersRow(
             label = stringResource(Res.string.transactions_filter_expense),
             selected = selected is TransactionsFilter.Expense,
             onClick = { onFilterSelected(TransactionsFilter.Expense) },
+        )
+        KashFilterChip(
+            label = stringResource(Res.string.transactions_filter_transfer),
+            selected = selected is TransactionsFilter.Transfer,
+            onClick = { onFilterSelected(TransactionsFilter.Transfer) },
+        )
+        KashFilterChip(
+            label = stringResource(Res.string.transactions_filter_account),
+            selected = selected is TransactionsFilter.Account,
+            onClick = { onFilterSelected(TransactionsFilter.Account) },
+            trailingCount = 2,
         )
         categoryFilters.forEach { category ->
             KashFilterChip(

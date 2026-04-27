@@ -21,6 +21,8 @@ class SettingsComponent(
     private val onThemeModeChange: (ThemeMode) -> Unit,
     private val onImportClicked: () -> Unit = {},
     private val onExportClicked: () -> Unit = {},
+    private val onAccountsClicked: () -> Unit = {},
+    private val onExchangeRatesClicked: () -> Unit = {},
 ) : ComponentContext by componentContext {
 
     private val scope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
@@ -37,6 +39,8 @@ class SettingsComponent(
         baseCurrencySymbol = "₸",
         themeMode = themeMode.value,
         appVersion = getAppVersion(),
+        accountsCount = 5,
+        sampleRate = "USD 478.5",
     )
 
     val uiState: StateFlow<SettingsUiState> = themeMode
@@ -48,6 +52,8 @@ class SettingsComponent(
             is SettingsEvent.ThemeChanged -> onThemeModeChange(event.mode)
             SettingsEvent.ImportTransactionsClicked -> onImportClicked()
             SettingsEvent.ExportCsvClicked -> onExportClicked()
+            SettingsEvent.AccountsClicked -> onAccountsClicked()
+            SettingsEvent.ExchangeRatesClicked -> onExchangeRatesClicked()
             SettingsEvent.BaseCurrencyClicked,
             SettingsEvent.SignOutClicked -> Unit
         }

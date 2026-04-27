@@ -7,4 +7,6 @@ sealed interface HomeEvent {
     data object AddTransactionClicked : HomeEvent
     data object ViewAllTransactionsClicked : HomeEvent
     data object ImportStatementClicked : HomeEvent
+    data class AccountSelected(val accountId: String) : HomeEvent
+    data object AllAccountsClicked : HomeEvent
 }

@@ -21,6 +21,10 @@ data class KashColors(
     val accentSoftInk: Color,
     val pos: Color,
     val neg: Color,
+    val bankNeutralBg: Color,
+    val bankNeutralFg: Color,
+    val warn: Color,
+    val warnSoft: Color,
     val isDark: Boolean,
 )
 
@@ -40,6 +44,10 @@ val KashLightColors = KashColors(
     accentSoftInk = Color(0xFF1F3D2C),
     pos = Color(0xFF3D7A4A),
     neg = Color(0xFFB0473A),
+    bankNeutralBg = Color(0xFFE8E4D6),
+    bankNeutralFg = Color(0xFF3A3A33),
+    warn = Color(0xFFA86E1F),
+    warnSoft = Color(0xFFF4E5C8),
     isDark = false,
 )
 
@@ -59,6 +67,10 @@ val KashDarkColors = KashColors(
     accentSoftInk = Color(0xFF9CC6A4),
     pos = Color(0xFF7FB089),
     neg = Color(0xFFD27F73),
+    bankNeutralBg = Color(0x1AF1ECE0),
+    bankNeutralFg = Color(0xFFC8C2B0),
+    warn = Color(0xFFD5A865),
+    warnSoft = Color(0x29D5A865),
     isDark = true,
 )
 

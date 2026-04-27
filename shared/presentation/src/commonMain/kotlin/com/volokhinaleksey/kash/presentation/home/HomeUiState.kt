@@ -13,8 +13,25 @@ sealed interface HomeUiState {
         val expenses: String,
         val selectedPeriod: Period,
         val recentTransactions: List<TransactionUiModel>,
+        val currencyChips: List<HomeCurrencyChip> = emptyList(),
+        val accountsStrip: List<HomeAccountChip> = emptyList(),
     ) : HomeUiState
 }
+
+data class HomeCurrencyChip(
+    val code: String,
+    val amount: String,
+)
+
+data class HomeAccountChip(
+    val id: String,
+    val name: String,
+    val typeShort: String,
+    val balance: String,
+    val currencySymbol: String,
+    val bankId: String,
+    val selected: Boolean = false,
+)
 
 data class TransactionUiModel(
     val id: Long,
@@ -24,4 +41,5 @@ data class TransactionUiModel(
     val isIncome: Boolean,
     val iconName: String,
     val date: String,
+    val bankId: String = "cash",
 )

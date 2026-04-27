@@ -8,6 +8,11 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.volokhinaleksey.kash.components.KashBottomBar
+import com.volokhinaleksey.kash.navigation.accounts.AccountDetailScreen
+import com.volokhinaleksey.kash.navigation.accounts.AccountsScreen
+import com.volokhinaleksey.kash.navigation.accounts.AddAccountScreen
+import com.volokhinaleksey.kash.navigation.accounts.ExchangeRatesScreen
+import com.volokhinaleksey.kash.navigation.accounts.InstitutionPickerScreen
 import com.volokhinaleksey.kash.navigation.home.HomeScreen
 import com.volokhinaleksey.kash.navigation.importexport.ExportScreen
 import com.volokhinaleksey.kash.navigation.importexport.ImportErrorScreen
@@ -18,6 +23,7 @@ import com.volokhinaleksey.kash.navigation.settings.SettingsScreen
 import com.volokhinaleksey.kash.navigation.stats.StatsScreen
 import com.volokhinaleksey.kash.navigation.transactions.AddTransactionScreen
 import com.volokhinaleksey.kash.navigation.transactions.TransactionsScreen
+import com.volokhinaleksey.kash.navigation.transfer.TransferScreen
 import com.volokhinaleksey.kash.theme.Kash
 
 @Composable
@@ -29,7 +35,13 @@ fun RootContent(component: RootComponent) {
         activeChild !is RootChild.ImportPreview &&
         activeChild !is RootChild.ImportError &&
         activeChild !is RootChild.Export &&
-        activeChild !is RootChild.Onboarding
+        activeChild !is RootChild.Onboarding &&
+        activeChild !is RootChild.Accounts &&
+        activeChild !is RootChild.AccountDetail &&
+        activeChild !is RootChild.AddAccount &&
+        activeChild !is RootChild.InstitutionPicker &&
+        activeChild !is RootChild.ExchangeRates &&
+        activeChild !is RootChild.Transfer
 
     Scaffold(
         containerColor = Kash.colors.bg,
@@ -53,7 +65,13 @@ fun RootContent(component: RootComponent) {
                     is RootChild.ImportPick,
                     is RootChild.ImportPreview,
                     is RootChild.ImportError,
-                    is RootChild.Export -> slide()
+                    is RootChild.Export,
+                    is RootChild.Accounts,
+                    is RootChild.AccountDetail,
+                    is RootChild.AddAccount,
+                    is RootChild.InstitutionPicker,
+                    is RootChild.ExchangeRates,
+                    is RootChild.Transfer -> slide()
                     else -> null
                 }
             },
@@ -84,6 +102,30 @@ fun RootContent(component: RootComponent) {
                     contentPadding = innerPadding,
                 )
                 is RootChild.ImportError -> ImportErrorScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.Accounts -> AccountsScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.AccountDetail -> AccountDetailScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.AddAccount -> AddAccountScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.InstitutionPicker -> InstitutionPickerScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.ExchangeRates -> ExchangeRatesScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.Transfer -> TransferScreen(
                     component = instance.component,
                     contentPadding = innerPadding,
                 )

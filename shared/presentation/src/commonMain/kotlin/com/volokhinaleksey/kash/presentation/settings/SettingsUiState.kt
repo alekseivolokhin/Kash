@@ -8,4 +8,6 @@ data class SettingsUiState(
     val baseCurrencySymbol: String,
     val themeMode: ThemeMode,
     val appVersion: String,
+    val accountsCount: Int = 0,
+    val sampleRate: String = "",
 )

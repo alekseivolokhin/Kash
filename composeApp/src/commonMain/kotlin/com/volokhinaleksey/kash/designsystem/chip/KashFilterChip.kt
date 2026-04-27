@@ -24,20 +24,22 @@ fun KashFilterChip(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    trailingCount: Int? = null,
 ) {
     val shape = RoundedCornerShape(50)
     val background = if (selected) Kash.colors.accent else Color.Transparent
     val borderColor = if (selected) Color.Transparent else Kash.colors.line
     val contentColor = if (selected) Kash.colors.accentInk else Kash.colors.sub
 
-    Box(
+    androidx.compose.foundation.layout.Row(
         modifier = modifier
             .clip(shape)
             .background(background)
             .border(1.dp, borderColor, shape)
             .clickable(onClick = onClick)
             .padding(horizontal = 13.dp, vertical = 7.dp),
-        contentAlignment = Alignment.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(5.dp),
     ) {
         Text(
             text = label,
@@ -47,5 +49,22 @@ fun KashFilterChip(
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
             ),
         )
+        if (trailingCount != null && trailingCount > 0) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(Kash.colors.accentSoft)
+                    .padding(horizontal = 5.dp, vertical = 0.dp),
+            ) {
+                Text(
+                    text = trailingCount.toString(),
+                    color = Kash.colors.accentSoftInk,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+            }
+        }
     }
 }

@@ -177,4 +177,78 @@
     <string name="import_error_details_format">file: %1$s\nerror: %2$s\npages: %3$d · size: %4$s</string>
     <string name="import_error_action_retry">Try another file</string>
     <string name="import_error_action_help">How to export from your bank →</string>
+
+    <string name="accounts_title">Accounts</string>
+    <string name="accounts_total_balance">Total balance</string>
+    <string name="accounts_empty_title">Add your first account</string>
+    <string name="accounts_empty_subtitle">Track cash, debit cards, credit cards or deposits — across any banks and currencies.</string>
+    <string name="accounts_empty_action_new">New account</string>
+    <string name="accounts_empty_action_import">Import from bank statement</string>
+    <string name="accounts_filter_all">All</string>
+    <string name="accounts_filter_income">Income</string>
+    <string name="accounts_filter_expense">Expense</string>
+    <string name="accounts_filter_transfers">Transfers</string>
+    <string name="accounts_balance_label">Balance</string>
+    <string name="accounts_empty_transfers_title">No transfers yet</string>
+    <string name="accounts_empty_transfers_subtitle">Move money between your accounts — they\'ll show up here.</string>
+    <string name="accounts_empty_transfers_action">Make a transfer</string>
+    <string name="accounts_strip_all">All accounts</string>
+    <string name="accounts_credit_available_format">Available %1$s %2$s · limit %3$s</string>
+    <string name="accounts_amount_kzt_approx_format">≈ %1$s ₸</string>
+
+    <string name="add_account_title">New Account</string>
+    <string name="add_account_section_type">Type</string>
+    <string name="add_account_type_cash">Cash</string>
+    <string name="add_account_type_debit">Debit</string>
+    <string name="add_account_type_credit">Credit</string>
+    <string name="add_account_type_deposit">Deposit</string>
+    <string name="add_account_initial_balance">Initial balance</string>
+    <string name="add_account_field_name">Account name</string>
+    <string name="add_account_field_institution">Institution</string>
+    <string name="add_account_field_currency">Currency</string>
+    <string name="add_account_section_color">Color</string>
+    <string name="add_account_action_create">Create account</string>
+
+    <string name="institution_picker_title">Choose Bank</string>
+    <string name="institution_picker_search_hint">Search bank…</string>
+    <string name="institution_picker_no_bank_title">No bank — cash</string>
+    <string name="institution_picker_no_bank_subtitle">For wallet, envelope, etc.</string>
+    <string name="institution_picker_section_popular">Popular in KZ</string>
+    <string name="institution_picker_section_all">All banks</string>
+
+    <string name="transfer_title">Transfer</string>
+    <string name="transfer_from">From</string>
+    <string name="transfer_to">To</string>
+    <string name="transfer_you_send">You send</string>
+    <string name="transfer_they_receive">They receive</string>
+    <string name="transfer_rate_label_format">Rate · %1$s</string>
+    <string name="transfer_rate_auto_suffix">· auto</string>
+    <string name="transfer_rate_override">Override</string>
+    <string name="transfer_field_comment">Comment</string>
+    <string name="transfer_action_save">Save transfer</string>
+
+    <string name="rates_title">Exchange Rates</string>
+    <string name="rates_caption">Rates are used for multi-currency totals and transfers. You can override any rate manually for a specific date.</string>
+    <string name="rates_update_title">Update from internet</string>
+    <string name="rates_update_subtitle_format">Last sync · %1$s</string>
+    <string name="rates_update_action">Sync</string>
+    <string name="rates_section_active">Active pairs</string>
+    <string name="rates_badge_auto">AUTO</string>
+    <string name="rates_badge_manual">MANUAL</string>
+    <string name="rates_badge_stale">STALE</string>
+    <string name="rates_offline_banner_title">Offline.</string>
+    <string name="rates_offline_banner_format">Using rates from %1$s · %2$s.</string>
+
+    <string name="transactions_filter_transfer">Transfer</string>
+    <string name="transactions_filter_account">Account</string>
+    <string name="transactions_transfer_label">Transfer</string>
+
+    <string name="add_tx_type_transfer">Transfer</string>
+    <string name="add_tx_account_section">From account</string>
+
+    <string name="stats_kzt_disclaimer">All amounts in KZT, converted at the rate on each transaction\'s date.</string>
+
+    <string name="settings_section_finance">Finance</string>
+    <string name="settings_accounts">Accounts</string>
+    <string name="settings_exchange_rates">Exchange Rates</string>
 </resources>

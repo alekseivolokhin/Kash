@@ -20,11 +20,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.FileUpload
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -60,18 +62,21 @@ import com.volokhinaleksey.kash.theme.Kash
 import com.volokhinaleksey.kash.theme.KashTheme
 import kash.composeapp.generated.resources.Res
 import kash.composeapp.generated.resources.nav_settings
+import kash.composeapp.generated.resources.settings_accounts
 import kash.composeapp.generated.resources.settings_app_version
 import kash.composeapp.generated.resources.settings_appearance
 import kash.composeapp.generated.resources.settings_appearance_dark
 import kash.composeapp.generated.resources.settings_appearance_light
 import kash.composeapp.generated.resources.settings_appearance_system
 import kash.composeapp.generated.resources.settings_base_currency
+import kash.composeapp.generated.resources.settings_exchange_rates
 import kash.composeapp.generated.resources.settings_export_csv
 import kash.composeapp.generated.resources.settings_import_transactions
 import kash.composeapp.generated.resources.settings_personal_account
 import kash.composeapp.generated.resources.settings_premium
 import kash.composeapp.generated.resources.settings_section_about
 import kash.composeapp.generated.resources.settings_section_data
+import kash.composeapp.generated.resources.settings_section_finance
 import kash.composeapp.generated.resources.settings_section_general
 import kash.composeapp.generated.resources.settings_sign_out
 import org.jetbrains.compose.resources.stringResource
@@ -135,13 +140,30 @@ private fun SettingsContent(
             ) {
                 ProfileCard(state = state)
 
-                SettingsSection(label = stringResource(Res.string.settings_section_general)) {
+                SettingsSection(label = stringResource(Res.string.settings_section_finance)) {
+                    NavigationRow(
+                        icon = Icons.Outlined.Wallet,
+                        label = stringResource(Res.string.settings_accounts),
+                        trailingText = state.accountsCount.toString(),
+                        onClick = { onEvent(SettingsEvent.AccountsClicked) },
+                    )
+                    HorizontalDivider(thickness = 1.dp, color = Kash.colors.line)
                     BaseCurrencyRow(
                         currencyCode = state.baseCurrencyCode,
                         currencySymbol = state.baseCurrencySymbol,
                         onClick = { onEvent(SettingsEvent.BaseCurrencyClicked) },
                     )
                     HorizontalDivider(thickness = 1.dp, color = Kash.colors.line)
+                    NavigationRow(
+                        icon = Icons.Outlined.BarChart,
+                        label = stringResource(Res.string.settings_exchange_rates),
+                        trailingText = state.sampleRate,
+                        useMonoTrailing = true,
+                        onClick = { onEvent(SettingsEvent.ExchangeRatesClicked) },
+                    )
+                }
+
+                SettingsSection(label = stringResource(Res.string.settings_section_general)) {
                     AppearanceRow(
                         themeMode = state.themeMode,
                         onThemeChange = { onEvent(SettingsEvent.ThemeChanged(it)) },
@@ -249,10 +271,21 @@ private fun NavigationRow(
     icon: ImageVector,
     label: String,
     onClick: () -> Unit,
+    trailingText: String? = null,
+    useMonoTrailing: Boolean = false,
 ) {
     SettingsRowContainer(onClick = onClick) {
         RowIcon(icon = icon, contentDescription = label)
         RowLabel(text = label, modifier = Modifier.weight(1f))
+        if (!trailingText.isNullOrEmpty()) {
+            Text(
+                text = trailingText,
+                color = Kash.colors.fade,
+                fontSize = if (useMonoTrailing) 12.sp else 13.sp,
+                fontFamily = if (useMonoTrailing) com.volokhinaleksey.kash.theme.JetBrainsMonoFontFamily() else null,
+            )
+            Spacer(Modifier.width(8.dp))
+        }
         Icon(
             imageVector = Icons.Outlined.ChevronRight,
             contentDescription = null,
@@ -416,6 +449,8 @@ private fun SettingsContentPreview() {
                 baseCurrencySymbol = "₸",
                 themeMode = ThemeMode.SYSTEM,
                 appVersion = "1.0.0",
+                accountsCount = 5,
+                sampleRate = "USD 478.5",
             ),
             onEvent = {},
         )

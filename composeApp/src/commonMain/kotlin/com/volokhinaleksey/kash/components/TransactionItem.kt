@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.volokhinaleksey.kash.designsystem.bank.Bank
+import com.volokhinaleksey.kash.designsystem.bank.BankBadge
 import com.volokhinaleksey.kash.theme.Kash
 
 @Composable
@@ -33,8 +36,10 @@ fun TransactionItem(
     iconName: String,
     modifier: Modifier = Modifier,
     showDivider: Boolean = true,
+    bankId: String? = null,
 ) {
     val swatch = categorySwatchFor(iconName)
+    val bank = bankId?.let { id -> Bank.entries.firstOrNull { it.id == id } }
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -43,19 +48,33 @@ fun TransactionItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(42.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(swatch.bg),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = mapCategoryIcon(iconName),
-                    contentDescription = null,
-                    tint = swatch.fg,
-                    modifier = Modifier.size(19.dp),
-                )
+            Box(modifier = Modifier.size(42.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(swatch.bg),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = mapCategoryIcon(iconName),
+                        contentDescription = null,
+                        tint = swatch.fg,
+                        modifier = Modifier.size(19.dp),
+                    )
+                }
+                if (bank != null) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .offset(x = 3.dp, y = 3.dp)
+                            .clip(RoundedCornerShape(5.dp))
+                            .background(Kash.colors.bg)
+                            .padding(1.5.dp),
+                    ) {
+                        BankBadge(bank = bank, size = 14.dp, cornerRadius = 4.dp)
+                    }
+                }
             }
 
             Column(

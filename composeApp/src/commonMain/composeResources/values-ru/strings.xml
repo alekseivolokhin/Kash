@@ -168,4 +168,78 @@
     <string name="import_error_details_format">файл: %1$s\nошибка: %2$s\nстраниц: %3$d · размер: %4$s</string>
     <string name="import_error_action_retry">Выбрать другой файл</string>
     <string name="import_error_action_help">Как выгрузить из банка →</string>
+
+    <string name="accounts_title">Счета</string>
+    <string name="accounts_total_balance">Общий баланс</string>
+    <string name="accounts_empty_title">Добавьте первый счёт</string>
+    <string name="accounts_empty_subtitle">Учитывайте наличные, дебетовые и кредитные карты и депозиты — в любых банках и валютах.</string>
+    <string name="accounts_empty_action_new">Новый счёт</string>
+    <string name="accounts_empty_action_import">Импортировать из выписки</string>
+    <string name="accounts_filter_all">Все</string>
+    <string name="accounts_filter_income">Доходы</string>
+    <string name="accounts_filter_expense">Расходы</string>
+    <string name="accounts_filter_transfers">Переводы</string>
+    <string name="accounts_balance_label">Баланс</string>
+    <string name="accounts_empty_transfers_title">Переводов пока нет</string>
+    <string name="accounts_empty_transfers_subtitle">Переводите деньги между счетами — они появятся здесь.</string>
+    <string name="accounts_empty_transfers_action">Сделать перевод</string>
+    <string name="accounts_strip_all">Все счета</string>
+    <string name="accounts_credit_available_format">Доступно %1$s %2$s · лимит %3$s</string>
+    <string name="accounts_amount_kzt_approx_format">≈ %1$s ₸</string>
+
+    <string name="add_account_title">Новый счёт</string>
+    <string name="add_account_section_type">Тип</string>
+    <string name="add_account_type_cash">Наличные</string>
+    <string name="add_account_type_debit">Дебет</string>
+    <string name="add_account_type_credit">Кредит</string>
+    <string name="add_account_type_deposit">Депозит</string>
+    <string name="add_account_initial_balance">Начальный баланс</string>
+    <string name="add_account_field_name">Название счёта</string>
+    <string name="add_account_field_institution">Банк</string>
+    <string name="add_account_field_currency">Валюта</string>
+    <string name="add_account_section_color">Цвет</string>
+    <string name="add_account_action_create">Создать счёт</string>
+
+    <string name="institution_picker_title">Выберите банк</string>
+    <string name="institution_picker_search_hint">Поиск банка…</string>
+    <string name="institution_picker_no_bank_title">Без банка — наличные</string>
+    <string name="institution_picker_no_bank_subtitle">Для кошелька, конверта и т. п.</string>
+    <string name="institution_picker_section_popular">Популярные в Казахстане</string>
+    <string name="institution_picker_section_all">Все банки</string>
+
+    <string name="transfer_title">Перевод</string>
+    <string name="transfer_from">Откуда</string>
+    <string name="transfer_to">Куда</string>
+    <string name="transfer_you_send">Вы отправляете</string>
+    <string name="transfer_they_receive">Получатель получит</string>
+    <string name="transfer_rate_label_format">Курс · %1$s</string>
+    <string name="transfer_rate_auto_suffix">· авто</string>
+    <string name="transfer_rate_override">Изменить</string>
+    <string name="transfer_field_comment">Комментарий</string>
+    <string name="transfer_action_save">Сохранить перевод</string>
+
+    <string name="rates_title">Курсы валют</string>
+    <string name="rates_caption">Курсы используются для мультивалютных сумм и переводов. Вы можете задать любой курс вручную на конкретную дату.</string>
+    <string name="rates_update_title">Обновить из интернета</string>
+    <string name="rates_update_subtitle_format">Последняя синхронизация · %1$s</string>
+    <string name="rates_update_action">Обновить</string>
+    <string name="rates_section_active">Активные пары</string>
+    <string name="rates_badge_auto">АВТО</string>
+    <string name="rates_badge_manual">ВРУЧНУЮ</string>
+    <string name="rates_badge_stale">УСТАРЕЛ</string>
+    <string name="rates_offline_banner_title">Без сети.</string>
+    <string name="rates_offline_banner_format">Используются курсы от %1$s · %2$s.</string>
+
+    <string name="transactions_filter_transfer">Перевод</string>
+    <string name="transactions_filter_account">Счёт</string>
+    <string name="transactions_transfer_label">Перевод</string>
+
+    <string name="add_tx_type_transfer">Перевод</string>
+    <string name="add_tx_account_section">Со счёта</string>
+
+    <string name="stats_kzt_disclaimer">Все суммы в KZT, конвертированы по курсу на дату каждой операции.</string>
+
+    <string name="settings_section_finance">Финансы</string>
+    <string name="settings_accounts">Счета</string>
+    <string name="settings_exchange_rates">Курсы валют</string>
 </resources>

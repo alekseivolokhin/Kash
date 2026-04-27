@@ -32,6 +32,9 @@ class AddTransactionComponent(
             is AddTransactionEvent.TypeChanged ->
                 _uiState.update { it.copy(type = event.type) }
 
+            is AddTransactionEvent.TabSelected ->
+                _uiState.update { it.copy(tab = event.tab) }
+
             is AddTransactionEvent.AmountChanged ->
                 _uiState.update { it.copy(amount = event.amount) }
 
@@ -42,6 +45,7 @@ class AddTransactionComponent(
                 _uiState.update { it.copy(note = event.note) }
 
             AddTransactionEvent.DateClicked -> Unit
+            AddTransactionEvent.AccountClicked -> Unit
 
             is AddTransactionEvent.DateChanged ->
                 _uiState.update { it.copy(date = event.epochMillis) }

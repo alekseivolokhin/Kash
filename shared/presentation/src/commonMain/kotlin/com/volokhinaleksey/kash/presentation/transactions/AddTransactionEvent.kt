@@ -4,10 +4,12 @@ import com.volokhinaleksey.kash.domain.model.TransactionType
 
 sealed interface AddTransactionEvent {
     data class TypeChanged(val type: TransactionType) : AddTransactionEvent
+    data class TabSelected(val tab: AddTxTab) : AddTransactionEvent
     data class AmountChanged(val amount: String) : AddTransactionEvent
     data class CategorySelected(val categoryId: Long) : AddTransactionEvent
     data class NoteChanged(val note: String) : AddTransactionEvent
     data object DateClicked : AddTransactionEvent
     data class DateChanged(val epochMillis: Long) : AddTransactionEvent
+    data object AccountClicked : AddTransactionEvent
     data object SaveClicked : AddTransactionEvent
 }

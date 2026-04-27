@@ -62,6 +62,7 @@ import kash.composeapp.generated.resources.income
 import kash.composeapp.generated.resources.stats_empty_action
 import kash.composeapp.generated.resources.stats_empty_subtitle
 import kash.composeapp.generated.resources.stats_empty_title
+import kash.composeapp.generated.resources.stats_kzt_disclaimer
 import kash.composeapp.generated.resources.stats_overview
 import kash.composeapp.generated.resources.stats_spent_less
 import kash.composeapp.generated.resources.stats_spent_more
@@ -191,6 +192,19 @@ private fun StatsSuccessContent(
                         .padding(bottom = 12.dp),
                 )
             }
+        }
+        item(key = "disclaimer") {
+            Spacer(Modifier.height(10.dp))
+            Text(
+                text = stringResource(Res.string.stats_kzt_disclaimer),
+                color = Kash.colors.fade,
+                fontSize = 11.5.sp,
+                lineHeight = 17.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = KashDimens.ScreenHorizontalPadding + 14.dp, vertical = 10.dp),
+            )
         }
     }
 }

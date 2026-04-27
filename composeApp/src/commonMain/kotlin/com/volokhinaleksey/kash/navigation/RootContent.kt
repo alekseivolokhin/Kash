@@ -1,11 +1,18 @@
 package com.volokhinaleksey.kash.navigation
 
+import androidx.compose.animation.core.EaseInOutCubic
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.stack.animation.Direction
+import com.arkivanov.decompose.extensions.compose.stack.animation.StackAnimator
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimator
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.volokhinaleksey.kash.components.KashBottomBar
 import com.volokhinaleksey.kash.navigation.accounts.AccountDetailScreen
@@ -25,6 +32,26 @@ import com.volokhinaleksey.kash.navigation.transactions.AddTransactionScreen
 import com.volokhinaleksey.kash.navigation.transactions.TransactionsScreen
 import com.volokhinaleksey.kash.navigation.transfer.TransferScreen
 import com.volokhinaleksey.kash.theme.Kash
+
+private val NavAnimationSpec: FiniteAnimationSpec<Float> = tween(
+    durationMillis = 380,
+    easing = EaseInOutCubic,
+)
+
+private fun parallaxPush(
+    animationSpec: FiniteAnimationSpec<Float> = NavAnimationSpec,
+    backFactor: Float = 0.30f,
+): StackAnimator = stackAnimator(animationSpec = animationSpec) { factor, direction, content ->
+    val multiplier = when (direction) {
+        Direction.ENTER_FRONT, Direction.EXIT_FRONT -> 1f
+        Direction.ENTER_BACK, Direction.EXIT_BACK -> backFactor
+    }
+    content(
+        Modifier.graphicsLayer {
+            translationX = factor * size.width * multiplier
+        }
+    )
+}
 
 @Composable
 fun RootContent(component: RootComponent) {
@@ -71,7 +98,7 @@ fun RootContent(component: RootComponent) {
                     is RootChild.AddAccount,
                     is RootChild.InstitutionPicker,
                     is RootChild.ExchangeRates,
-                    is RootChild.Transfer -> slide()
+                    is RootChild.Transfer -> parallaxPush()
                     else -> null
                 }
             },

@@ -8,5 +8,6 @@ sealed interface AddTransactionEvent {
     data class CategorySelected(val categoryId: Long) : AddTransactionEvent
     data class NoteChanged(val note: String) : AddTransactionEvent
     data object DateClicked : AddTransactionEvent
+    data class DateChanged(val epochMillis: Long) : AddTransactionEvent
     data object SaveClicked : AddTransactionEvent
 }

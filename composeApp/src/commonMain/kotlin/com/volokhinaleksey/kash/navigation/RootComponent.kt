@@ -12,8 +12,10 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.volokhinaleksey.kash.navigation.home.HomeComponent
 import com.volokhinaleksey.kash.navigation.importexport.ExportComponent
+import com.volokhinaleksey.kash.navigation.importexport.ImportErrorComponent
 import com.volokhinaleksey.kash.navigation.importexport.ImportPickComponent
 import com.volokhinaleksey.kash.navigation.importexport.ImportPreviewComponent
+import com.volokhinaleksey.kash.presentation.importexport.ImportErrorUiState
 import com.volokhinaleksey.kash.navigation.onboarding.OnboardingComponent
 import com.volokhinaleksey.kash.navigation.settings.SettingsComponent
 import com.volokhinaleksey.kash.navigation.stats.StatsComponent
@@ -68,7 +70,12 @@ class RootComponent(
                 onNavigateToAddTransaction = { navigation.push(RootConfig.AddTransaction) },
             )
         )
-        is RootConfig.Stats -> RootChild.Stats(StatsComponent(componentContext))
+        is RootConfig.Stats -> RootChild.Stats(
+            StatsComponent(
+                componentContext = componentContext,
+                onAddTransaction = { navigation.push(RootConfig.AddTransaction) },
+            )
+        )
         is RootConfig.Settings -> RootChild.Settings(
             SettingsComponent(
                 componentContext = componentContext,
@@ -89,6 +96,30 @@ class RootComponent(
                 componentContext = componentContext,
                 onBack = { navigation.pop() },
                 onFilePicked = { navigation.push(RootConfig.ImportPreview) },
+                onFileFailed = { error ->
+                    navigation.push(
+                        RootConfig.ImportError(
+                            fileName = error.fileName,
+                            errorCode = error.errorCode,
+                            pages = error.pages,
+                            sizeLabel = error.sizeLabel,
+                        )
+                    )
+                },
+            )
+        )
+        is RootConfig.ImportError -> RootChild.ImportError(
+            ImportErrorComponent(
+                componentContext = componentContext,
+                initialState = ImportErrorUiState(
+                    fileName = config.fileName,
+                    errorCode = config.errorCode,
+                    pages = config.pages,
+                    sizeLabel = config.sizeLabel,
+                ),
+                onBack = { navigation.pop() },
+                onRetry = { navigation.pop() },
+                onHelp = { },
             )
         )
         is RootConfig.ImportPreview -> RootChild.ImportPreview(
@@ -150,6 +181,14 @@ sealed interface RootConfig {
 
     @Serializable
     data object Export : RootConfig
+
+    @Serializable
+    data class ImportError(
+        val fileName: String,
+        val errorCode: String,
+        val pages: Int,
+        val sizeLabel: String,
+    ) : RootConfig
 }
 
 sealed class RootChild {
@@ -162,4 +201,5 @@ sealed class RootChild {
     data class ImportPick(val component: ImportPickComponent) : RootChild()
     data class ImportPreview(val component: ImportPreviewComponent) : RootChild()
     data class Export(val component: ExportComponent) : RootChild()
+    data class ImportError(val component: ImportErrorComponent) : RootChild()
 }

@@ -146,4 +146,26 @@
     <string name="empty_home_subtitle">Добавьте первую вручную или импортируйте выписку CSV/PDF из вашего банка.</string>
     <string name="empty_home_action_add">Добавить операцию</string>
     <string name="empty_home_action_import">Импорт выписки</string>
+
+    <string name="stats_title">Статистика</string>
+    <string name="stats_overview">Обзор</string>
+    <string name="stats_top_categories">Топ категорий</string>
+    <string name="stats_vs_last_month">К прошлому месяцу</string>
+    <string name="stats_spent_less">Потратили на %1$d%% меньше</string>
+    <string name="stats_spent_more">Потратили на %1$d%% больше</string>
+    <string name="stats_spent_same">Без изменений</string>
+    <string name="stats_empty_title">Пока нет данных</string>
+    <string name="stats_empty_subtitle">Добавьте хотя бы несколько операций — Kash начнёт показывать тренды, топ категорий и сравнение по месяцам.</string>
+    <string name="stats_empty_action">Добавить операцию</string>
+
+    <string name="date_picker_title">Выберите дату</string>
+    <string name="date_picker_confirm">OK</string>
+    <string name="date_picker_dismiss">Отмена</string>
+
+    <string name="import_error_title">Не удалось прочитать файл</string>
+    <string name="import_error_subtitle">Похоже, PDF — это скан-изображение, и текст из него не извлекается. Попробуйте CSV-экспорт из банка.</string>
+    <string name="import_error_details_label">Детали</string>
+    <string name="import_error_details_format">файл: %1$s\nошибка: %2$s\nстраниц: %3$d · размер: %4$s</string>
+    <string name="import_error_action_retry">Выбрать другой файл</string>
+    <string name="import_error_action_help">Как выгрузить из банка →</string>
 </resources>

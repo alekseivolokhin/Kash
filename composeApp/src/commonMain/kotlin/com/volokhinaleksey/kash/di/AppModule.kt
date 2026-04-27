@@ -9,6 +9,7 @@ import com.volokhinaleksey.kash.domain.repository.CategoryRepository
 import com.volokhinaleksey.kash.domain.repository.TransactionRepository
 import com.volokhinaleksey.kash.domain.usecase.GetBalanceSummaryUseCase
 import com.volokhinaleksey.kash.domain.usecase.GetRecentTransactionsUseCase
+import com.volokhinaleksey.kash.domain.usecase.GetStatsUseCase
 import com.volokhinaleksey.kash.domain.usecase.GetTransactionsUseCase
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -25,6 +26,7 @@ val appModule = module {
     factory { GetBalanceSummaryUseCase(get()) }
     factory { GetRecentTransactionsUseCase(get(), get()) }
     factory { GetTransactionsUseCase(get(), get()) }
+    factory { GetStatsUseCase(get(), get()) }
 }
 
 fun initKoin(platformConfig: KoinApplication.() -> Unit = {}) {

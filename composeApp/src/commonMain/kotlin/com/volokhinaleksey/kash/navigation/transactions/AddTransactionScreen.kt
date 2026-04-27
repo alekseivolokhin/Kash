@@ -20,7 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +32,7 @@ import com.volokhinaleksey.kash.components.AmountInputSection
 import com.volokhinaleksey.kash.components.CategoryItem
 import com.volokhinaleksey.kash.components.CategoryPickerGrid
 import com.volokhinaleksey.kash.components.InputRowCard
+import com.volokhinaleksey.kash.components.KashDatePickerDialog
 import com.volokhinaleksey.kash.components.KashPrimaryButton
 import com.volokhinaleksey.kash.components.NoteRowCard
 import com.volokhinaleksey.kash.components.TransactionTypeSwitcher
@@ -53,12 +57,31 @@ fun AddTransactionScreen(
     contentPadding: PaddingValues = PaddingValues(),
 ) {
     val state by component.uiState.collectAsState()
+    var showDatePicker by rememberSaveable { mutableStateOf(false) }
+
     AddTransactionContent(
         state = state,
-        onEvent = remember(component) { component::onEvent },
+        onEvent = { event ->
+            if (event is AddTransactionEvent.DateClicked) {
+                showDatePicker = true
+            } else {
+                component.onEvent(event)
+            }
+        },
         onBackClick = remember(component) { component::onBackClicked },
         contentPadding = contentPadding,
     )
+
+    if (showDatePicker) {
+        KashDatePickerDialog(
+            initialEpochMillis = state.date,
+            onDateSelected = { millis ->
+                component.onEvent(AddTransactionEvent.DateChanged(millis))
+                showDatePicker = false
+            },
+            onDismiss = { showDatePicker = false },
+        )
+    }
 }
 
 @Composable

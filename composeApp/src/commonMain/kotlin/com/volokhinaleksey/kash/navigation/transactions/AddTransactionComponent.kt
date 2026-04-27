@@ -42,6 +42,10 @@ class AddTransactionComponent(
                 _uiState.update { it.copy(note = event.note) }
 
             AddTransactionEvent.DateClicked -> Unit
+
+            is AddTransactionEvent.DateChanged ->
+                _uiState.update { it.copy(date = event.epochMillis) }
+
             AddTransactionEvent.SaveClicked -> onBack()
         }
     }

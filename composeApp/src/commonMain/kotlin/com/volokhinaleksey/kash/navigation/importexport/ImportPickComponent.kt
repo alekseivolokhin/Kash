@@ -2,6 +2,7 @@ package com.volokhinaleksey.kash.navigation.importexport
 
 import com.arkivanov.decompose.ComponentContext
 import com.volokhinaleksey.kash.presentation.importexport.BankTint
+import com.volokhinaleksey.kash.presentation.importexport.ImportErrorUiState
 import com.volokhinaleksey.kash.presentation.importexport.ImportPickEvent
 import com.volokhinaleksey.kash.presentation.importexport.ImportPickUiState
 import com.volokhinaleksey.kash.presentation.importexport.SupportedBank
@@ -12,6 +13,7 @@ class ImportPickComponent(
     componentContext: ComponentContext,
     private val onBack: () -> Unit,
     private val onFilePicked: () -> Unit,
+    private val onFileFailed: (ImportErrorUiState) -> Unit = {},
 ) : ComponentContext by componentContext {
 
     private val _uiState = MutableStateFlow(

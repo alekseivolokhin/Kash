@@ -155,4 +155,26 @@
     <string name="empty_home_subtitle">Add your first one manually, or import a CSV/PDF statement from your bank.</string>
     <string name="empty_home_action_add">Add transaction</string>
     <string name="empty_home_action_import">Import statement</string>
+
+    <string name="stats_title">Statistics</string>
+    <string name="stats_overview">Overview</string>
+    <string name="stats_top_categories">Top Categories</string>
+    <string name="stats_vs_last_month">vs Last Month</string>
+    <string name="stats_spent_less">You spent %1$d%% less</string>
+    <string name="stats_spent_more">You spent %1$d%% more</string>
+    <string name="stats_spent_same">No change</string>
+    <string name="stats_empty_title">Nothing to chart yet</string>
+    <string name="stats_empty_subtitle">Add at least a few transactions and Kash will start showing trends, top categories, and month-over-month comparisons.</string>
+    <string name="stats_empty_action">Add transaction</string>
+
+    <string name="date_picker_title">Pick a date</string>
+    <string name="date_picker_confirm">OK</string>
+    <string name="date_picker_dismiss">Cancel</string>
+
+    <string name="import_error_title">We couldn\'t read this file</string>
+    <string name="import_error_subtitle">The PDF looks like a scanned image, so the text isn\'t extractable. Try the CSV export from your bank instead.</string>
+    <string name="import_error_details_label">Details</string>
+    <string name="import_error_details_format">file: %1$s\nerror: %2$s\npages: %3$d · size: %4$s</string>
+    <string name="import_error_action_retry">Try another file</string>
+    <string name="import_error_action_help">How to export from your bank →</string>
 </resources>

@@ -10,6 +10,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.volokhinaleksey.kash.components.KashBottomBar
 import com.volokhinaleksey.kash.navigation.home.HomeScreen
 import com.volokhinaleksey.kash.navigation.importexport.ExportScreen
+import com.volokhinaleksey.kash.navigation.importexport.ImportErrorScreen
 import com.volokhinaleksey.kash.navigation.importexport.ImportPickScreen
 import com.volokhinaleksey.kash.navigation.importexport.ImportPreviewScreen
 import com.volokhinaleksey.kash.navigation.onboarding.OnboardingScreen
@@ -25,6 +26,7 @@ fun RootContent(component: RootComponent) {
     val showBottomBar = activeChild !is RootChild.AddTransaction &&
         activeChild !is RootChild.ImportPick &&
         activeChild !is RootChild.ImportPreview &&
+        activeChild !is RootChild.ImportError &&
         activeChild !is RootChild.Export &&
         activeChild !is RootChild.Onboarding
 
@@ -48,6 +50,7 @@ fun RootContent(component: RootComponent) {
                     is RootChild.AddTransaction,
                     is RootChild.ImportPick,
                     is RootChild.ImportPreview,
+                    is RootChild.ImportError,
                     is RootChild.Export -> slide()
                     else -> null
                 }
@@ -60,7 +63,7 @@ fun RootContent(component: RootComponent) {
                 )
                 is RootChild.Home -> HomeScreen(instance.component, contentPadding = innerPadding)
                 is RootChild.Transactions -> TransactionsScreen(instance.component, contentPadding = innerPadding)
-                is RootChild.Stats -> StatsScreen(instance.component)
+                is RootChild.Stats -> StatsScreen(instance.component, contentPadding = innerPadding)
                 is RootChild.Settings -> SettingsScreen(instance.component, contentPadding = innerPadding)
                 is RootChild.AddTransaction -> AddTransactionScreen(
                     component = instance.component,
@@ -75,6 +78,10 @@ fun RootContent(component: RootComponent) {
                     contentPadding = innerPadding,
                 )
                 is RootChild.Export -> ExportScreen(
+                    component = instance.component,
+                    contentPadding = innerPadding,
+                )
+                is RootChild.ImportError -> ImportErrorScreen(
                     component = instance.component,
                     contentPadding = innerPadding,
                 )
